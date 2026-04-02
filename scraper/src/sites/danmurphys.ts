@@ -59,6 +59,109 @@ function splitBreweryName(title: string, brandHint: string): { brewery: string; 
   return { brewery: "", name: t };
 }
 
+/** Strip pack/vessel/volume from the end; vessel + sizeMl are stored separately. */
+function cleanBeerName(raw: string): string {
+  let s = raw.replace(/\s+/g, " ").trim();
+  s = s.replace(
+    /,?\s*(bottles?|cans?|stubbies?)\s*,?\s*\d+\s*m[lL]?\b/gi,
+    "",
+  );
+  s = s.replace(/\s+\d+\s*m[lL]\b/gi, "");
+  s = s.replace(/,?\s*(bottles?|cans?|stubbies?)\s*$/gi, "");
+  s = s.replace(/^[,–—-]\s*/, "").replace(/\s*[,–—-]\s*$/, "");
+  return s.replace(/\s+/g, " ").trim();
+}
+
+function capitalizeWords(s: string): string {
+  return s
+    .split(/[\s-]+/)
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(" ");
+}
+
+/** Listing tiles: Sponsored, Member offer, review counts, etc. */
+function isUiChromeLine(line: string): boolean {
+  const t = line.trim();
+  if (t.length === 0 || t.length > 140) return true;
+  if (/^\$/.test(t)) return true;
+  if (/^sponsored$/i.test(t)) return true;
+  if (/^member\s*offer$/i.test(t)) return true;
+  if (/^limits?\s*apply$/i.test(t)) return true;
+  if (/^save\s+/i.test(t)) return true;
+  if (/^was\s+/i.test(t)) return true;
+  if (/^each$/i.test(t)) return true;
+  if (/^per\s+/i.test(t)) return true;
+  if (/^add\s+to\s+cart/i.test(t)) return true;
+  if (/^view\s+/i.test(t)) return true;
+  if (/^compare$/i.test(t)) return true;
+  if (/^online\s+only$/i.test(t)) return true;
+  if (/^only\s+at\s+/i.test(t)) return true;
+  if (/^\(?\s*\d+\s+reviews?\s*\)?$/i.test(t)) return true;
+  if (/^\(\s*\d+\s+reviews?\s*\)$/i.test(t)) return true;
+  if (/^\(\s*\d+\s+review\s*\)$/i.test(t)) return true;
+  if (/^\d+\s+reviews?$/i.test(t)) return true;
+  if (/^\(\s*\d+\s+reviews?\s*\)/i.test(t)) return true;
+  return false;
+}
+
+/**
+ * URL slug often looks like `asahi-super-dry-cans-500ml` — split before bottles/cans/stubbies + optional ml.
+ */
+function parseBreweryAndNameFromProductHref(href: string): { brewery: string; name: string } | null {
+  try {
+    const u = new URL(href.startsWith("http") ? href : `https://www.danmurphys.com.au${href}`);
+    const parts = u.pathname.split("/").filter(Boolean);
+    const slug = parts[parts.length - 1] ?? "";
+    if (!slug.includes("-")) return null;
+    const tokens = slug.split("-").filter(Boolean);
+    const vesselIdx = tokens.findIndex((p) => /^(cans?|bottles?|stubbies?)$/i.test(p));
+    if (vesselIdx < 1) return null;
+    const before = tokens.slice(0, vesselIdx);
+    if (before.length < 2) return null;
+    const brewery = capitalizeWords(before[0] ?? "");
+    const name = cleanBeerName(capitalizeWords(before.slice(1).join(" ")));
+    if (!brewery || !name) return null;
+    return { brewery, name };
+  } catch {
+    return null;
+  }
+}
+
+function collectProductTitleLines(cardText: string): string[] {
+  return cardText
+    .split(/\n+/)
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .filter((line) => !/\$\s*\d/.test(line))
+    .filter((line) => !/^from\s+\$/i.test(line))
+    .filter((line) => !isPromotionalMessage(line))
+    .filter((line) => !isUiChromeLine(line))
+    .filter((line) => !isReviewCountLine(line))
+    .filter((line) => line.length >= 2);
+}
+
+function parseBreweryAndBeerFromCard(cardText: string, href: string): { brewery: string; name: string } | null {
+  const lines = collectProductTitleLines(cardText);
+  if (lines.length >= 2) {
+    const brewery = lines[0].trim();
+    const rawProduct = lines.slice(1).join(" ");
+    const name = cleanBeerName(rawProduct);
+    if (!name || !isPlausibleProductName(name)) return null;
+    return { brewery, name };
+  }
+  if (lines.length === 1) {
+    const slug = parseBreweryAndNameFromProductHref(href);
+    if (slug) return { brewery: slug.brewery, name: slug.name };
+    const name = cleanBeerName(lines[0]);
+    if (!name || !isPlausibleProductName(name)) return null;
+    return { brewery: "", name };
+  }
+  const slugOnly = parseBreweryAndNameFromProductHref(href);
+  if (slugOnly && isPlausibleProductName(slugOnly.name)) return slugOnly;
+  return null;
+}
+
 function looksLikeProduct(o: Record<string, unknown>): boolean {
   const hasName = Boolean(o.DisplayName ?? o.Name ?? o.Title);
   const hasPriceShape =
@@ -105,10 +208,29 @@ function addLegacySlot(slot: unknown, prices: PriceEntry[]): void {
 }
 
 function mapLegacyDm(o: Record<string, unknown>): CanonicalProduct | null {
-  const title = String(o.Name ?? o.DisplayName ?? o.Title ?? "");
+  const title = String(o.Name ?? o.DisplayName ?? o.Title ?? "").trim();
   if (!title) return null;
-  const brand = String(o.Brand ?? "");
-  const { brewery, name } = splitBreweryName(title, brand);
+  const brand = String(o.Brand ?? "").trim();
+  let brewery = "";
+  let name = title;
+  if (brand) {
+    const low = title.toLowerCase();
+    const bl = brand.toLowerCase();
+    if (low.startsWith(bl)) {
+      name = title.slice(brand.length).replace(/^[\s–—-]+/, "").trim();
+      brewery = brand;
+    } else {
+      const s = splitBreweryName(title, brand);
+      brewery = s.brewery;
+      name = s.name;
+    }
+  } else {
+    const s = splitBreweryName(title, "");
+    brewery = s.brewery;
+    name = s.name;
+  }
+  name = cleanBeerName(name);
+  if (!name) return null;
   const prices: PriceEntry[] = [];
   addLegacySlot(o.caseprice, prices);
   addLegacySlot(o.singleprice, prices);
@@ -123,10 +245,29 @@ function mapLegacyDm(o: Record<string, unknown>): CanonicalProduct | null {
 }
 
 function mapWoolworthsStyle(o: Record<string, unknown>): CanonicalProduct | null {
-  const displayName = String(o.DisplayName ?? o.Name ?? o.Title ?? "");
+  const displayName = String(o.DisplayName ?? o.Name ?? o.Title ?? "").trim();
   if (!displayName) return null;
-  const brand = o.Brand != null ? String(o.Brand) : "";
-  const { brewery, name } = splitBreweryName(displayName, brand);
+  const brand = o.Brand != null ? String(o.Brand).trim() : "";
+  let brewery = "";
+  let name = displayName;
+  if (brand) {
+    const low = displayName.toLowerCase();
+    const bl = brand.toLowerCase();
+    if (low.startsWith(bl)) {
+      name = displayName.slice(brand.length).replace(/^[\s–—-]+/, "").trim();
+      brewery = brand;
+    } else {
+      const s = splitBreweryName(displayName, brand);
+      brewery = s.brewery;
+      name = s.name;
+    }
+  } else {
+    const s = splitBreweryName(displayName, "");
+    brewery = s.brewery;
+    name = s.name;
+  }
+  name = cleanBeerName(name);
+  if (!name) return null;
   const prices: PriceEntry[] = [];
   const price = num(o.Price ?? o.InstorePrice);
   if (price != null && price > 0) {
@@ -153,11 +294,28 @@ function mapWoolworthsStyle(o: Record<string, unknown>): CanonicalProduct | null
 function mapUnknownProduct(o: Record<string, unknown>): CanonicalProduct | null {
   if (typeof o.caseprice === "object" || typeof o.singleprice === "object") {
     const p = mapLegacyDm(o);
-    if (p && p.prices.length > 0) return p;
+    if (p && p.prices.length > 0 && isPlausibleProductName(p.name)) return p;
   }
   const ww = mapWoolworthsStyle(o);
-  if (ww && ww.prices.length > 0) return ww;
+  if (ww && ww.prices.length > 0 && isPlausibleProductName(ww.name)) return ww;
   return null;
+}
+
+/** Site banners, modals, and footers sometimes match Name/DisplayName + Price in JSON. */
+function isPlausibleProductName(name: string): boolean {
+  const t = name.trim();
+  if (t.length < 2 || t.length > 180) return false;
+  if (isReviewCountLine(t)) return false;
+  if (isUiChromeLine(t)) return false;
+  const lower = t.toLowerCase();
+  if (
+    /reminder|our stores are closed|good friday|order now|weekend|subscribe|newsletter|cookie|privacy policy|click here|sign up|terms and conditions|would you like to change your store|change your store|default store|delivery/i.test(
+      lower,
+    )
+  ) {
+    return false;
+  }
+  return true;
 }
 
 function productsFromJsonValue(body: unknown): CanonicalProduct[] {
@@ -240,61 +398,81 @@ function parsePricesFromCardText(text: string): PriceEntry[] {
   return dedupePriceEntries(entries);
 }
 
-function titleFromCardText(text: string): string {
-  const lines = text
-    .split(/\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
-  for (const line of lines) {
-    if (/\$\s*\d/.test(line)) continue;
-    if (/^from\s+\$/i.test(line)) continue;
-    if (line.length < 4) continue;
-    if (/^add to cart|^view|^compare/i.test(line)) continue;
-    return line;
-  }
-  return lines[0] ?? "";
+function isPromotionalMessage(line: string): boolean {
+  const t = line.trim().toLowerCase();
+  if (t.length > 160) return true;
+  return /reminder|our stores are closed|good friday|order now|weekend|subscribe|newsletter|cookie|privacy policy|click here|sign up|terms and conditions|would you like to change your store|change your store|default store|delivery under|same day/i.test(
+    t,
+  );
 }
 
-async function extractProductsFromDom(page: Page): Promise<CanonicalProduct[]> {
-  const raw = await page.evaluate(() => {
-    const links = [
-      ...document.querySelectorAll<HTMLAnchorElement>('a[href*="/product/"]'),
-    ];
-    const byHref = new Map<string, string>();
-    for (const a of links) {
-      const href = a.getAttribute("href") ?? "";
-      if (!href.includes("/product/")) continue;
-      const lower = href.toLowerCase();
-      if (lower.includes("gift") || lower.includes("egift")) continue;
-      const card =
-        a.closest("article") ??
-        a.closest('[class*="product"]') ??
-        a.closest("li") ??
-        a.parentElement?.parentElement;
-      if (!card) continue;
-      const text = (card as HTMLElement).innerText ?? "";
-      if (!text || !/\$/.test(text)) continue;
-      const full = href.startsWith("http") ? href : `https://www.danmurphys.com.au${href}`;
-      if (!byHref.has(full)) byHref.set(full, text);
-    }
-    return [...byHref.entries()];
-  });
+/** Listing tiles often put star ratings in the link; the real title is elsewhere in the card. */
+function isReviewCountLine(line: string): boolean {
+  const t = line.trim();
+  return (
+    /^\d+\s+reviews?$/i.test(t) ||
+    /^\(\s*\d+\s+reviews?\s*\)$/i.test(t) ||
+    /^\(\s*\d+\s+review\s*\)$/i.test(t) ||
+    /^\(\s*\d+\s+reviews?\s*\)/i.test(t)
+  );
+}
 
+const MAX_PRICE_LINES_PER_PRODUCT = 12;
+
+async function extractProductsFromDom(page: Page): Promise<CanonicalProduct[]> {
+  const anchors = page.locator('a[href*="/product/"]');
+  const n = await anchors.count();
+  const seenHref = new Set<string>();
   const out: CanonicalProduct[] = [];
-  for (const [, text] of raw) {
-    const title = titleFromCardText(text);
-    if (!title) continue;
-    const { brewery, name } = splitBreweryName(title, "");
-    const prices = parsePricesFromCardText(text);
+
+  for (let i = 0; i < n; i++) {
+    const a = anchors.nth(i);
+    const href = (await a.getAttribute("href")) ?? "";
+    if (!href.includes("/product/")) continue;
+    const lower = href.toLowerCase();
+    if (lower.includes("gift") || lower.includes("egift")) continue;
+    const full = href.startsWith("http") ? href : `https://www.danmurphys.com.au${href}`;
+    if (seenHref.has(full)) continue;
+    seenHref.add(full);
+
+    // Smallest ancestor with a price that still looks like one tile (avoids banner + whole grid).
+    const cardText = await a.evaluate((el) => {
+      const MAX_CARD_CHARS = 2000;
+      const MAX_CARD_LINES = 35;
+      const candidates: HTMLElement[] = [];
+      for (let cur = (el as HTMLElement).parentElement; cur && cur !== document.body; cur = cur.parentElement) {
+        const t = cur.innerText ?? "";
+        if (!t.includes("$")) continue;
+        candidates.push(cur);
+      }
+      if (candidates.length === 0) return "";
+      candidates.sort((x, y) => (x.innerText?.length ?? 0) - (y.innerText?.length ?? 0));
+      for (const c of candidates) {
+        const t = (c.innerText ?? "").trim();
+        const lines = t.split(/\n+/).filter(Boolean);
+        if (t.length >= 40 && t.length <= MAX_CARD_CHARS && lines.length <= MAX_CARD_LINES) return t;
+      }
+      return "";
+    });
+
+    if (!cardText || !/\$/.test(cardText)) continue;
+
+    const parsed = parseBreweryAndBeerFromCard(cardText, full);
+    if (!parsed) continue;
+    const { brewery, name } = parsed;
+    const prices = parsePricesFromCardText(cardText);
     if (prices.length === 0) continue;
+    if (prices.length > MAX_PRICE_LINES_PER_PRODUCT) continue;
+    const textForMeta = `${brewery} ${name} ${cardText}`;
     out.push({
       brewery,
       name,
-      vesselType: inferVessel(title + " " + text),
-      sizeMl: extractSizeMl(title + " " + text),
+      vesselType: inferVessel(textForMeta),
+      sizeMl: extractSizeMl(textForMeta),
       prices,
     });
   }
+
   return out;
 }
 
