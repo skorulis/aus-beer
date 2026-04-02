@@ -1,0 +1,1 @@
+swift run --package-path ./BeerCLI BeerCLI $@
