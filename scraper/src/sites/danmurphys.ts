@@ -86,6 +86,8 @@ function isUiChromeLine(line: string): boolean {
   if (t.length === 0 || t.length > 140) return true;
   if (/^\$/.test(t)) return true;
   if (/^sponsored$/i.test(t)) return true;
+  if (/^offer$/i.test(t)) return true;
+  if (/^special\s+offer$/i.test(t)) return true;
   if (/^member\s*offer$/i.test(t)) return true;
   if (/^limits?\s*apply$/i.test(t)) return true;
   if (/^save\s+/i.test(t)) return true;
@@ -201,9 +203,11 @@ function addLegacySlot(slot: unknown, prices: PriceEntry[]): void {
     o.PackType != null && typeof o.PackType !== "object" ? String(o.PackType).toLowerCase() : "";
   let quantity =
     parseQuantityFromMessage(msg) ?? (packType === "pack" ? 6 : null) ?? 1;
-  const member = Boolean(
-    o.IsMemberPrice ?? o.MemberPrice ?? o.isMemberPrice ?? /member/i.test(msg),
-  );
+  const explicit = o.IsMemberPrice ?? o.MemberPrice ?? o.isMemberPrice;
+  const member =
+    explicit != null && explicit !== ""
+      ? Boolean(explicit)
+      : inferMemberOfferFromText(msg);
   prices.push({ price, quantity, memberOffer: member });
 }
 
@@ -373,15 +377,86 @@ function dedupePriceEntries(prices: PriceEntry[]): PriceEntry[] {
   return mergePriceLists([], prices);
 }
 
+/**
+ * Retail tiles label non-member prices with "Non-member" / "Non member". A naive `/member/`
+ * regex matches the substring inside "non-member", inverting the flag.
+ */
+function inferMemberOfferFromText(text: string): boolean {
+  const t = text.toLowerCase();
+  if (/non[-\s]?member|nonmember/.test(t)) return false;
+  if (
+    /\bmember\s+price|\bmembers?\s+price|my\s+dan|rewards?\s+card|member\s+offer|dans\s+member/i.test(
+      t,
+    )
+  ) {
+    return true;
+  }
+  if (/\bmembers?\b/.test(t)) return true;
+  return false;
+}
+
+/** When a tile shows two prices for the same pack size, the lower one is almost always the member price. */
+function reconcileMemberOffersForSameQuantity(entries: PriceEntry[]): void {
+  const byQty = new Map<number, PriceEntry[]>();
+  for (const e of entries) {
+    const list = byQty.get(e.quantity) ?? [];
+    list.push(e);
+    byQty.set(e.quantity, list);
+  }
+  for (const [, list] of byQty) {
+    if (list.length !== 2) continue;
+    const [a, b] = list;
+    if (a.memberOffer !== b.memberOffer) continue;
+    if (a.memberOffer && b.memberOffer) continue;
+    if (a.price === b.price) continue;
+    const cheaper = a.price < b.price ? a : b;
+    const pricier = a.price < b.price ? b : a;
+    cheaper.memberOffer = true;
+    pricier.memberOffer = false;
+  }
+}
+
+/** Ignore "non-member" wording so we can detect real member pricing elsewhere on the tile. */
+function cardSuggestsMemberPricing(fullCardText: string): boolean {
+  const stripped = fullCardText.replace(/non[-\s]?member/gi, " ");
+  return inferMemberOfferFromText(stripped);
+}
+
+/**
+ * Different pack sizes on one tile: if text still flags member somewhere (after stripping non-member),
+ * assign memberOffer to the better per-unit price (usual Dan Murphy's pattern).
+ */
+function reconcileMemberOffersMixedQuantity(entries: PriceEntry[], fullCardText: string): void {
+  if (entries.length !== 2) return;
+  const a = entries[0];
+  const b = entries[1];
+  if (a.quantity === b.quantity) return;
+  if (a.memberOffer !== b.memberOffer) return;
+  if (a.memberOffer && b.memberOffer) return;
+  if (!cardSuggestsMemberPricing(fullCardText)) return;
+  const perUnit = (e: PriceEntry) => e.price / e.quantity;
+  const aPu = perUnit(a);
+  const bPu = perUnit(b);
+  if (Math.abs(aPu - bPu) < 1e-9) return;
+  const better = aPu < bPu ? a : b;
+  const worse = aPu < bPu ? b : a;
+  better.memberOffer = true;
+  worse.memberOffer = false;
+}
+
 function parsePricesFromCardText(text: string): PriceEntry[] {
   const lines = text
     .split(/\n+/)
     .map((l) => l.trim())
     .filter(Boolean);
   const entries: PriceEntry[] = [];
-  for (const line of lines) {
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
     if (!/\$/.test(line)) continue;
-    const memberOffer = /member|my dan|rewards?/i.test(line);
+    const lo = Math.max(0, i - 2);
+    const hi = Math.min(lines.length, i + 3);
+    const context = lines.slice(lo, hi).join(" ").replace(/\s+/g, " ").trim();
+    const memberOffer = inferMemberOfferFromText(context);
     const m = line.match(/\$\s*(\d+(?:\.\d{2})?)/);
     if (!m) continue;
     const price = Number.parseFloat(m[1]);
@@ -395,6 +470,8 @@ function parsePricesFromCardText(text: string): PriceEntry[] {
     else if (eachM) quantity = Number.parseInt(eachM[1], 10);
     entries.push({ price, quantity: quantity || 1, memberOffer });
   }
+  reconcileMemberOffersForSameQuantity(entries);
+  reconcileMemberOffersMixedQuantity(entries, text);
   return dedupePriceEntries(entries);
 }
 
