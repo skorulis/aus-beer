@@ -568,7 +568,16 @@ async function dismissDialogs(page: Page): Promise<void> {
   }
 }
 
-export async function scrapeDanmurphysFirstPage(): Promise<CanonicalProduct[]> {
+export type ScrapeDanmurphysMode = "products" | "html";
+
+export async function scrapeDanmurphysFirstPage(options: { mode: "html" }): Promise<string>;
+export async function scrapeDanmurphysFirstPage(options?: {
+  mode?: "products";
+}): Promise<CanonicalProduct[]>;
+export async function scrapeDanmurphysFirstPage(options?: {
+  mode?: ScrapeDanmurphysMode;
+}): Promise<CanonicalProduct[] | string> {
+  const mode: ScrapeDanmurphysMode = options?.mode === "html" ? "html" : "products";
   const browser = await chromium.launch({ headless: process.env.HEADFUL !== "1" });
   const fromNetwork: CanonicalProduct[] = [];
   const responseTasks: Promise<void>[] = [];
@@ -582,22 +591,24 @@ export async function scrapeDanmurphysFirstPage(): Promise<CanonicalProduct[]> {
     });
     const page = await context.newPage();
 
-    page.on("response", (response) => {
-      responseTasks.push(
-        (async () => {
-          try {
-            const url = response.url();
-            if (!url.includes("danmurphys.com.au")) return;
-            const ct = response.headers()["content-type"] ?? "";
-            if (!ct.includes("application/json")) return;
-            const body = await response.json();
-            fromNetwork.push(...productsFromJsonValue(body));
-          } catch {
-            /* not JSON or aborted */
-          }
-        })(),
-      );
-    });
+    if (mode === "products") {
+      page.on("response", (response) => {
+        responseTasks.push(
+          (async () => {
+            try {
+              const url = response.url();
+              if (!url.includes("danmurphys.com.au")) return;
+              const ct = response.headers()["content-type"] ?? "";
+              if (!ct.includes("application/json")) return;
+              const body = await response.json();
+              fromNetwork.push(...productsFromJsonValue(body));
+            } catch {
+              /* not JSON or aborted */
+            }
+          })(),
+        );
+      });
+    }
 
     await page.goto(BEER_LIST_URL, { waitUntil: "domcontentloaded", timeout: 120000 });
     await dismissDialogs(page);
@@ -609,6 +620,12 @@ export async function scrapeDanmurphysFirstPage(): Promise<CanonicalProduct[]> {
     await dismissDialogs(page);
     await Promise.allSettled(responseTasks);
     await delay(200);
+
+    if (mode === "html") {
+      /** Full document HTML after JS; suitable for fixture snapshots / DOM parsers. */
+      // Must await: bare `return page.content()` lets `finally` close the browser before the promise settles.
+      return await page.content();
+    }
 
     const fromDom = await extractProductsFromDom(page);
     return mergeProductLists([fromNetwork, fromDom]);
