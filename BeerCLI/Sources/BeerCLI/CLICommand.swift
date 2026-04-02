@@ -3,13 +3,16 @@
 import ArgumentParser
 import Foundation
 
+@available(macOS 10.15, macCatalyst 13, iOS 13, tvOS 13, watchOS 6, *)
 @main
 struct CLICommand: AsyncParsableCommand {
     
     static let configuration = CommandConfiguration(
-        commandName: "cli",
+        commandName: "BeerCLI",
         abstract: "Helpful commands to run tools in the app",
-        subcommands: []
+        subcommands: [
+            ScrapeCommand.self,
+        ]
     )
     
 }
