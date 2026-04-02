@@ -1,0 +1,394 @@
+{
+  "source": "danmurphys",
+  "scrapedAt": "2026-04-02T00:59:05.225Z",
+  "products": [
+    {
+      "brewery": "",
+      "name": "Reminder our stores are closed on Good Friday, order now for the weekend.",
+      "vesselType": "can",
+      "sizeMl": 500,
+      "prices": [
+        {
+          "price": 149,
+          "quantity": 1,
+          "memberOffer": true
+        },
+        {
+          "price": 26,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 29.95,
+          "quantity": 6,
+          "memberOffer": true
+        },
+        {
+          "price": 69,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 71.99,
+          "quantity": 24,
+          "memberOffer": true
+        },
+        {
+          "price": 91.9,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 95.99,
+          "quantity": 24,
+          "memberOffer": true
+        },
+        {
+          "price": 56.9,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 57.95,
+          "quantity": 24,
+          "memberOffer": true
+        },
+        {
+          "price": 18,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 19.99,
+          "quantity": 6,
+          "memberOffer": true
+        },
+        {
+          "price": 63,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 67.99,
+          "quantity": 16,
+          "memberOffer": true
+        },
+        {
+          "price": 10,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 15,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 25,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 50,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 100,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 88,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 89.99,
+          "quantity": 24,
+          "memberOffer": true
+        },
+        {
+          "price": 69.95,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 83.99,
+          "quantity": 24,
+          "memberOffer": true
+        },
+        {
+          "price": 59.95,
+          "quantity": 30,
+          "memberOffer": false
+        },
+        {
+          "price": 57.9,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 60.99,
+          "quantity": 24,
+          "memberOffer": true
+        },
+        {
+          "price": 31.95,
+          "quantity": 12,
+          "memberOffer": false
+        },
+        {
+          "price": 58,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 62.95,
+          "quantity": 24,
+          "memberOffer": true
+        },
+        {
+          "price": 98.9,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 51.95,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 18.95,
+          "quantity": 6,
+          "memberOffer": false
+        },
+        {
+          "price": 79.99,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 28.99,
+          "quantity": 6,
+          "memberOffer": false
+        },
+        {
+          "price": 57.95,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 24.99,
+          "quantity": 6,
+          "memberOffer": false
+        },
+        {
+          "price": 104.9,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 54.95,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 27.49,
+          "quantity": 6,
+          "memberOffer": false
+        },
+        {
+          "price": 68.95,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 66.95,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 23.49,
+          "quantity": 6,
+          "memberOffer": false
+        },
+        {
+          "price": 64.9,
+          "quantity": 30,
+          "memberOffer": false
+        },
+        {
+          "price": 65.99,
+          "quantity": 30,
+          "memberOffer": true
+        },
+        {
+          "price": 56.99,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 21.99,
+          "quantity": 6,
+          "memberOffer": false
+        },
+        {
+          "price": 89,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 89.9,
+          "quantity": 24,
+          "memberOffer": true
+        },
+        {
+          "price": 21,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 23.48,
+          "quantity": 6,
+          "memberOffer": true
+        },
+        {
+          "price": 52.95,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 58.9,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 58.95,
+          "quantity": 24,
+          "memberOffer": true
+        },
+        {
+          "price": 53.95,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 24.49,
+          "quantity": 6,
+          "memberOffer": false
+        },
+        {
+          "price": 56.95,
+          "quantity": 30,
+          "memberOffer": false
+        },
+        {
+          "price": 58.99,
+          "quantity": 30,
+          "memberOffer": true
+        },
+        {
+          "price": 63.95,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 64.99,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 46.95,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 20.99,
+          "quantity": 6,
+          "memberOffer": false
+        },
+        {
+          "price": 17.95,
+          "quantity": 6,
+          "memberOffer": false
+        },
+        {
+          "price": 63.99,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 23.99,
+          "quantity": 6,
+          "memberOffer": false
+        },
+        {
+          "price": 99.9,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 61.95,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 55.95,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 21.95,
+          "quantity": 6,
+          "memberOffer": false
+        },
+        {
+          "price": 5.69,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 56.95,
+          "quantity": 24,
+          "memberOffer": false
+        },
+        {
+          "price": 22.99,
+          "quantity": 6,
+          "memberOffer": false
+        },
+        {
+          "price": 59.9,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 64.95,
+          "quantity": 24,
+          "memberOffer": true
+        },
+        {
+          "price": 5.09,
+          "quantity": 1,
+          "memberOffer": false
+        },
+        {
+          "price": 59.95,
+          "quantity": 24,
+          "memberOffer": true
+        },
+        {
+          "price": 59.99,
+          "quantity": 24,
+          "memberOffer": true
+        },
+        {
+          "price": 23,
+          "quantity": 1,
+          "memberOffer": false
+        }
+      ]
+    }
+  ]
+}
