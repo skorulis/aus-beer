@@ -507,6 +507,12 @@ async function extractProductsFromDom(page: Page): Promise<CanonicalProduct[]> {
 
   for (let i = 0; i < n; i++) {
     const a = anchors.nth(i);
+    /** "Inspired By Your Browsing History" lives in <shop-rr-carousel>. */
+    const inBrowsingHistoryCarousel = await a.evaluate(
+      (el) => (el as Element).closest("shop-rr-carousel, .shop-rr-carousel") != null,
+    );
+    if (inBrowsingHistoryCarousel) continue;
+
     const href = (await a.getAttribute("href")) ?? "";
     if (!href.includes("/product/")) continue;
     const lower = href.toLowerCase();
