@@ -5,11 +5,12 @@ import type { ScrapeOutput } from "./schema.js";
 import { scrapeDanmurphysFirstPage } from "./sites/danmurphys.js";
 
 /** Usage: npm run scrape -- <output-file>  or  --out <output-file>  ;  --html for DOM snapshot */
-function parseCli(argv: string[]): { out: string | null; html: boolean } {
+function parseCli(argv: string[]): { out: string | null; html: boolean; maxPages: number } {
   const args = argv.slice(2);
   let explicit: string | null = null;
   let positional: string | null = null;
   let html = false;
+  let maxPages = 1;
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
     if (a === "--out" || a === "-o") {
@@ -17,18 +18,23 @@ function parseCli(argv: string[]): { out: string | null; html: boolean } {
       i++;
     } else if (a === "--html" || a === "--emit-html") {
       html = true;
+    } else if (a === "--max-pages" || a === "--pages") {
+      const raw = args[i + 1] ?? "";
+      const n = Number.parseInt(raw, 10);
+      if (Number.isFinite(n) && n >= 1) maxPages = n;
+      i++;
     } else if (!a.startsWith("-")) {
       positional = a;
     }
   }
-  return { out: explicit ?? positional, html };
+  return { out: explicit ?? positional, html, maxPages };
 }
 
 async function main(): Promise<void> {
-  const { out, html } = parseCli(process.argv);
+  const { out, html, maxPages } = parseCli(process.argv);
   if (!out) {
     console.error(
-      "Usage: npm run scrape -- <output-file>\n       npm run scrape -- --out <output-file>\n       npm run scrape -- --html <output.html>   # live DOM after JS (for test fixtures)",
+      "Usage: npm run scrape -- <output-file>\n       npm run scrape -- --out <output-file>\n       npm run scrape -- --max-pages <n> <output-file>\n       npm run scrape -- --html <output.html>   # live DOM after JS (for test fixtures)\n       npm run scrape -- --html --max-pages <n> <output.html>",
     );
     process.exitCode = 1;
     return;
@@ -37,13 +43,13 @@ async function main(): Promise<void> {
   mkdirSync(dirname(path), { recursive: true });
 
   if (html) {
-    const domHtml = await scrapeDanmurphysFirstPage({ mode: "html" });
+    const domHtml = await scrapeDanmurphysFirstPage({ mode: "html", pagesToLoad: maxPages });
     writeFileSync(path, domHtml, "utf8");
     console.error(`Wrote DOM HTML (${domHtml.length} chars) to ${path}`);
     return;
   }
 
-  const products = await scrapeDanmurphysFirstPage();
+  const products = await scrapeDanmurphysFirstPage({ pagesToLoad: maxPages });
   const payload: ScrapeOutput = {
     source: "danmurphys",
     scrapedAt: new Date().toISOString(),

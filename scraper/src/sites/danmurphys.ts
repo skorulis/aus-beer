@@ -6,7 +6,7 @@ import { chromium } from "playwright";
 
 import type { CanonicalProduct, PriceEntry, VesselType } from "../schema.js";
 
-/** First-screen only; "Show more" / full catalog is a future extension. */
+/** Loads the Dan Murphy's /beer/all listing; optionally expands via "Show x more". */
 const BEER_LIST_URL = "https://www.danmurphys.com.au/beer/all";
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -661,17 +661,82 @@ async function extractProductsFromDom(page: Page, logger?: Logger): Promise<Cano
   return out;
 }
 
+async function loadMoreCatalogPages(page: Page, pagesToLoad: number, logger?: Logger): Promise<void> {
+  const targetClicks = Math.max(0, Math.floor(pagesToLoad) - 1);
+  if (targetClicks === 0) return;
+
+  const tileSelector = "#results shop-product-card, dd-product-carousel .product--dm";
+  for (let clickIdx = 0; clickIdx < targetClicks; clickIdx++) {
+    const showMoreBtn = page.locator("button", { hasText: /Show\s+\d*\s+more/i }).first();
+    const visible = (await showMoreBtn.isVisible().catch(() => false)) && (await showMoreBtn.count()) > 0;
+    if (!visible) {
+      logger?.info(`show-more: no "Show x more" button found (stopping at ${clickIdx}/${targetClicks})`);
+      return;
+    }
+
+    const beforeText = (await showMoreBtn.innerText().catch(() => ""))?.trim();
+    const beforeTileCount = await page
+      .locator(tileSelector)
+      .count()
+      .catch(() => 0);
+
+    logger?.info(`show-more: click ${clickIdx + 1}/${targetClicks} (${beforeText || "text unknown"})`);
+    await showMoreBtn.click({ timeout: 15000 }).catch(() => undefined);
+
+    // Wait briefly for the button to "go away" (disabled/detached) so we don't double-click.
+    await page
+      .waitForFunction(() => {
+        const btn = Array.from(document.querySelectorAll("button")).find((b) =>
+          /Show\s+\d*\s+more/i.test((b.textContent ?? "").trim()),
+        );
+        if (!btn) return true;
+        const el = btn as HTMLButtonElement;
+        const disabled = el.disabled || el.getAttribute("aria-disabled") === "true";
+        return disabled;
+      }, { timeout: 20000 })
+      .catch(() => undefined);
+
+    // "Button return" condition: button is visible + enabled + result tiles have increased.
+    await page
+      .waitForFunction(
+        ({ beforeText, beforeTileCount }) => {
+          const btn = Array.from(document.querySelectorAll("button")).find((b) =>
+            /Show\s+\d*\s+more/i.test((b.textContent ?? "").trim()),
+          ) as HTMLButtonElement | undefined;
+          if (!btn) return false;
+          const disabled = btn.disabled || btn.getAttribute("aria-disabled") === "true";
+          if (disabled) return false;
+          const currentTileCount = document.querySelectorAll(
+            "#results shop-product-card, dd-product-carousel .product--dm",
+          ).length;
+          if (currentTileCount <= beforeTileCount) return false;
+          const txt = (btn.textContent ?? "").trim();
+          if (beforeText) return txt !== beforeText;
+          return true;
+        },
+        { beforeText, beforeTileCount },
+        { timeout: 90000 },
+      )
+      .catch(() => undefined);
+
+    // Best-effort settle so the next click targets the updated UI.
+    await page.waitForLoadState("networkidle", { timeout: 60000 }).catch(() => undefined);
+    await delay(200);
+  }
+}
+
 /**
  * Parse product tiles from a saved listing HTML (e.g. `npm run scrape -- --html …`). Uses the same DOM rules as the live scrape.
  * Fixture is loaded via `file:` URL; no network JSON merge (fixture-only DOM).
  */
 export async function parseDanmurphysProductsFromFixture(
   fixturePath: string,
-  options?: { logging?: boolean },
+  options?: { logging?: boolean; pagesToLoad?: number },
 ): Promise<CanonicalProduct[]> {
   const startedAtMs = Date.now();
   const { logging } = withDefaultLogging(options);
   const logger = makeLogger(logging, startedAtMs);
+  const pagesToLoad = Math.max(1, options?.pagesToLoad ?? 1);
 
   logger.info(`fixture: loading ${fixturePath}`);
   const fileUrl = pathToFileURL(resolve(fixturePath)).href;
@@ -688,6 +753,7 @@ export async function parseDanmurphysProductsFromFixture(
     await page.goto(fileUrl, { waitUntil: "domcontentloaded", timeout: 120000 });
     logger.info(`fixture: waiting for product links`);
     await page.waitForSelector('a[href*="/product/"]', { timeout: 90000 }).catch(() => undefined);
+    await loadMoreCatalogPages(page, pagesToLoad, logger);
     await delay(200);
     const products = await extractProductsFromDom(page, logger);
     logger.info(`fixture: extracted ${products.length} products`);
@@ -714,16 +780,23 @@ async function dismissDialogs(page: Page): Promise<void> {
 
 export type ScrapeDanmurphysMode = "products" | "html";
 
-export async function scrapeDanmurphysFirstPage(options: { mode: "html"; logging?: boolean }): Promise<string>;
+export async function scrapeDanmurphysFirstPage(options: {
+  mode: "html";
+  logging?: boolean;
+  pagesToLoad?: number;
+}): Promise<string>;
 export async function scrapeDanmurphysFirstPage(options?: {
   mode?: "products";
   logging?: boolean;
+  pagesToLoad?: number;
 }): Promise<CanonicalProduct[]>;
 export async function scrapeDanmurphysFirstPage(options?: {
   mode?: ScrapeDanmurphysMode;
   logging?: boolean;
+  pagesToLoad?: number;
 }): Promise<CanonicalProduct[] | string> {
   const mode: ScrapeDanmurphysMode = options?.mode === "html" ? "html" : "products";
+  const pagesToLoad = Math.max(1, options?.pagesToLoad ?? 1);
   const startedAtMs = Date.now();
   const { logging } = withDefaultLogging(options);
   const logger = makeLogger(logging, startedAtMs);
@@ -779,6 +852,8 @@ export async function scrapeDanmurphysFirstPage(options?: {
     await page
       .waitForSelector('a[href*="/product/"]', { timeout: 90000 })
       .catch(() => undefined);
+    logger.info(`page: loadMore pagesToLoad=${pagesToLoad}`);
+    await loadMoreCatalogPages(page, pagesToLoad, logger);
     logger.info(`page: wait for network idle`);
     await page.waitForLoadState("networkidle", { timeout: 90000 }).catch(() => undefined);
     await delay(1500);

@@ -38,6 +38,20 @@ Example writing to the repo root:
 npm run scrape -- ../result.json
 ```
 
+### Load more pages
+
+Dan Murphy’s uses a `“Show x more”` button to load more products. You can control how many pages get loaded before parsing:
+
+```bash
+npm run scrape -- --max-pages 3 ../result.json
+```
+
+This also works with `--html` fixture snapshots:
+
+```bash
+npm run scrape -- --html --max-pages 3 ../scraper/fixtures/danmurphys-beer-all.html
+```
+
 ### Debug (visible browser)
 
 If you need to see the page (modals, layout issues):
@@ -48,4 +62,4 @@ HEADFUL=1 npm run scrape -- ../result.json
 
 ## Scope
 
-The Dan Murphy’s adapter currently scrapes the **first page** of [`/beer/all`](https://www.danmurphys.com.au/beer/all) only. Loading more products (e.g. “Show more”) is planned as a follow-up.
+By default, the Dan Murphy’s adapter scrapes the **first page** of [`/beer/all`](https://www.danmurphys.com.au/beer/all). You can load additional pages (clicks the “Show x more” button) by passing `pagesToLoad` to `scrapeDanmurphysFirstPage(...)` / `parseDanmurphysProductsFromFixture(...)`.
