@@ -11,6 +11,35 @@ const BEER_LIST_URL = "https://www.danmurphys.com.au/beer/all";
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+type Logger = {
+  enabled: boolean;
+  info: (message: string) => void;
+  warn: (message: string) => void;
+};
+
+function makeLogger(enabled: boolean, startedAtMs: number): Logger {
+  const prefix = "[scraper/danmurphys]";
+  const elapsed = () => `${Date.now() - startedAtMs}ms`;
+
+  if (!enabled) {
+    return {
+      enabled: false,
+      info: () => undefined,
+      warn: () => undefined,
+    };
+  }
+
+  return {
+    enabled: true,
+    info: (message) => console.error(`${prefix} +${elapsed()} ${message}`),
+    warn: (message) => console.error(`${prefix} +${elapsed()} WARN ${message}`),
+  };
+}
+
+function withDefaultLogging(options: { logging?: boolean } | undefined): { logging: boolean } {
+  return { logging: options?.logging ?? true };
+}
+
 function asRecord(v: unknown): Record<string, unknown> | null {
   if (v && typeof v === "object" && !Array.isArray(v)) return v as Record<string, unknown>;
   return null;
@@ -547,7 +576,7 @@ function resolveBreweryAndName(row: DomProductRow): { brewery: string; name: str
   return { brewery, name };
 }
 
-async function extractProductsFromDom(page: Page): Promise<CanonicalProduct[]> {
+async function extractProductsFromDom(page: Page, logger?: Logger): Promise<CanonicalProduct[]> {
   const rows = await page.evaluate(() => {
     const out: DomProductRow[] = [];
     const carousel = document.querySelector("dd-product-carousel");
@@ -586,6 +615,8 @@ async function extractProductsFromDom(page: Page): Promise<CanonicalProduct[]> {
     }
     return out;
   });
+
+  logger?.info(`DOM: found ${rows.length} product tiles`);
 
   const seenCanonical = new Set<string>();
   const out: CanonicalProduct[] = [];
@@ -626,6 +657,7 @@ async function extractProductsFromDom(page: Page): Promise<CanonicalProduct[]> {
     });
   }
 
+  logger?.info(`DOM: parsed ${out.length} canonical products`);
   return out;
 }
 
@@ -633,7 +665,15 @@ async function extractProductsFromDom(page: Page): Promise<CanonicalProduct[]> {
  * Parse product tiles from a saved listing HTML (e.g. `npm run scrape -- --html …`). Uses the same DOM rules as the live scrape.
  * Fixture is loaded via `file:` URL; no network JSON merge (fixture-only DOM).
  */
-export async function parseDanmurphysProductsFromFixture(fixturePath: string): Promise<CanonicalProduct[]> {
+export async function parseDanmurphysProductsFromFixture(
+  fixturePath: string,
+  options?: { logging?: boolean },
+): Promise<CanonicalProduct[]> {
+  const startedAtMs = Date.now();
+  const { logging } = withDefaultLogging(options);
+  const logger = makeLogger(logging, startedAtMs);
+
+  logger.info(`fixture: loading ${fixturePath}`);
   const fileUrl = pathToFileURL(resolve(fixturePath)).href;
   const browser = await chromium.launch({ headless: true });
   try {
@@ -644,10 +684,14 @@ export async function parseDanmurphysProductsFromFixture(fixturePath: string): P
       locale: "en-AU",
     });
     const page = await context.newPage();
+    logger.info(`fixture: navigating`);
     await page.goto(fileUrl, { waitUntil: "domcontentloaded", timeout: 120000 });
+    logger.info(`fixture: waiting for product links`);
     await page.waitForSelector('a[href*="/product/"]', { timeout: 90000 }).catch(() => undefined);
     await delay(200);
-    return await extractProductsFromDom(page);
+    const products = await extractProductsFromDom(page, logger);
+    logger.info(`fixture: extracted ${products.length} products`);
+    return products;
   } finally {
     await browser.close();
   }
@@ -670,17 +714,26 @@ async function dismissDialogs(page: Page): Promise<void> {
 
 export type ScrapeDanmurphysMode = "products" | "html";
 
-export async function scrapeDanmurphysFirstPage(options: { mode: "html" }): Promise<string>;
+export async function scrapeDanmurphysFirstPage(options: { mode: "html"; logging?: boolean }): Promise<string>;
 export async function scrapeDanmurphysFirstPage(options?: {
   mode?: "products";
+  logging?: boolean;
 }): Promise<CanonicalProduct[]>;
 export async function scrapeDanmurphysFirstPage(options?: {
   mode?: ScrapeDanmurphysMode;
+  logging?: boolean;
 }): Promise<CanonicalProduct[] | string> {
   const mode: ScrapeDanmurphysMode = options?.mode === "html" ? "html" : "products";
+  const startedAtMs = Date.now();
+  const { logging } = withDefaultLogging(options);
+  const logger = makeLogger(logging, startedAtMs);
+  logger.info(`start (mode=${mode}, headful=${process.env.HEADFUL === "1"})`);
+
   const browser = await chromium.launch({ headless: process.env.HEADFUL !== "1" });
   const fromNetwork: CanonicalProduct[] = [];
   const responseTasks: Promise<void>[] = [];
+  let jsonResponsesMatched = 0;
+  let jsonProductsExtracted = 0;
 
   try {
     const context = await browser.newContext({
@@ -700,8 +753,16 @@ export async function scrapeDanmurphysFirstPage(options?: {
               if (!url.includes("danmurphys.com.au")) return;
               const ct = response.headers()["content-type"] ?? "";
               if (!ct.includes("application/json")) return;
+              jsonResponsesMatched++;
               const body = await response.json();
-              fromNetwork.push(...productsFromJsonValue(body));
+              const parsed = productsFromJsonValue(body);
+              jsonProductsExtracted += parsed.length;
+              fromNetwork.push(...parsed);
+              if (logger.enabled && jsonResponsesMatched <= 3) {
+                logger.info(
+                  `network json: parsed ${parsed.length} products (${jsonResponsesMatched} matched responses)`,
+                );
+              }
             } catch {
               /* not JSON or aborted */
             }
@@ -710,25 +771,38 @@ export async function scrapeDanmurphysFirstPage(options?: {
       });
     }
 
+    logger.info(`navigate: ${BEER_LIST_URL}`);
     await page.goto(BEER_LIST_URL, { waitUntil: "domcontentloaded", timeout: 120000 });
+    logger.info(`page: dismiss dialogs (best effort)`);
     await dismissDialogs(page);
+    logger.info(`page: waiting for product links`);
     await page
       .waitForSelector('a[href*="/product/"]', { timeout: 90000 })
       .catch(() => undefined);
+    logger.info(`page: wait for network idle`);
     await page.waitForLoadState("networkidle", { timeout: 90000 }).catch(() => undefined);
     await delay(1500);
+    logger.info(`page: dismiss dialogs (best effort #2)`);
     await dismissDialogs(page);
     await Promise.allSettled(responseTasks);
+    if (mode === "products") {
+      logger.info(
+        `network json: extracted ${jsonProductsExtracted} products from ${jsonResponsesMatched} matched responses`,
+      );
+    }
     await delay(200);
 
     if (mode === "html") {
       /** Full document HTML after JS; suitable for fixture snapshots / DOM parsers. */
       // Must await: bare `return page.content()` lets `finally` close the browser before the promise settles.
+      logger.info(`end: returning HTML snapshot`);
       return await page.content();
     }
 
-    const fromDom = await extractProductsFromDom(page);
-    return mergeProductLists([fromNetwork, fromDom]);
+    logger.info(`dom: extracting canonical products`);
+    const fromDom = await extractProductsFromDom(page, logger);
+    const merged = mergeProductLists([fromNetwork, fromDom]);
+    return merged;
   } finally {
     await browser.close();
   }
