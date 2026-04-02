@@ -1,3 +1,6 @@
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+
 import type { Page } from "playwright";
 import { chromium } from "playwright";
 
@@ -551,6 +554,30 @@ async function extractProductsFromDom(page: Page): Promise<CanonicalProduct[]> {
   }
 
   return out;
+}
+
+/**
+ * Parse product tiles from a saved listing HTML (e.g. `npm run scrape -- --html …`). Uses the same DOM rules as the live scrape.
+ * Fixture is loaded via `file:` URL; no network JSON merge (fixture-only DOM).
+ */
+export async function parseDanmurphysProductsFromFixture(fixturePath: string): Promise<CanonicalProduct[]> {
+  const fileUrl = pathToFileURL(resolve(fixturePath)).href;
+  const browser = await chromium.launch({ headless: true });
+  try {
+    const context = await browser.newContext({
+      viewport: { width: 1400, height: 900 },
+      userAgent:
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+      locale: "en-AU",
+    });
+    const page = await context.newPage();
+    await page.goto(fileUrl, { waitUntil: "domcontentloaded", timeout: 120000 });
+    await page.waitForSelector('a[href*="/product/"]', { timeout: 90000 }).catch(() => undefined);
+    await delay(200);
+    return await extractProductsFromDom(page);
+  } finally {
+    await browser.close();
+  }
 }
 
 async function dismissDialogs(page: Page): Promise<void> {

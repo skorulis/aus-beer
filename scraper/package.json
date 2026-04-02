@@ -5,6 +5,8 @@
   "description": "CLI: cd scraper && npm install && npm run scrape -- <output.json> (optional: --out <path>). Use --html <file.html> to save the post-JS DOM for fixtures. First page only for Dan Murphy's /beer/all; set HEADFUL=1 to debug.",
   "scripts": {
     "scrape": "tsx src/cli.ts",
+    "test": "tsx --test src/**/*.test.ts",
+    "fixture:expected": "tsx scripts/write-fixture-expected.mts",
     "postinstall": "playwright install chromium"
   },
   "dependencies": {

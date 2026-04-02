@@ -1,0 +1,1293 @@
+[
+  {
+    "brewery": "Asahi",
+    "name": "Super Dry",
+    "vesselType": "can",
+    "sizeMl": 500,
+    "prices": [
+      {
+        "price": 26,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 29.95,
+        "quantity": 6,
+        "memberOffer": true
+      }
+    ]
+  },
+  {
+    "brewery": "Brookvale Union",
+    "name": "Ginger Beer",
+    "vesselType": "can",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 93,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 95.99,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Mountain Goat",
+    "name": "Very Enjoyable Beer",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 56.9,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 57.95,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Tsingtao",
+    "name": "Premium Lager",
+    "vesselType": "bottle",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 18,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 19.99,
+        "quantity": 6,
+        "memberOffer": true
+      }
+    ]
+  },
+  {
+    "brewery": "Stone & Wood",
+    "name": "Pacific Ale",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 63,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 67.99,
+        "quantity": 16,
+        "memberOffer": true
+      }
+    ]
+  },
+  {
+    "brewery": "Tooheys",
+    "name": "Old",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 69.99,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 23.49,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Tooheys",
+    "name": "Old",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 69.99,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 23.49,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Monsuta",
+    "name": "Okinawa Supreme",
+    "vesselType": "can",
+    "sizeMl": 350,
+    "prices": [
+      {
+        "price": 19,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 24.99,
+        "quantity": 6,
+        "memberOffer": true
+      }
+    ]
+  },
+  {
+    "brewery": "Monsuta",
+    "name": "Okinawa Supreme",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 19,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 24.99,
+        "quantity": 6,
+        "memberOffer": true
+      }
+    ]
+  },
+  {
+    "brewery": "Guinness",
+    "name": "Draught",
+    "vesselType": "can",
+    "sizeMl": 470,
+    "prices": [
+      {
+        "price": 89,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 89.9,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Guinness",
+    "name": "Draught",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 89,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 89.9,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "James Squire",
+    "name": "Ginger Beer",
+    "vesselType": "can",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 88,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 89.99,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "James",
+    "name": "Squire Ginger Beer",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 88,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 89.99,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Stone & Wood",
+    "name": "Pacific Ale",
+    "vesselType": "bottle",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 69.95,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 83.99,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Stone",
+    "name": "Wood Pacific Ale",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 69.95,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 83.99,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Tooheys",
+    "name": "New 30 Block",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 59.95,
+        "quantity": 30,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Tooheys",
+    "name": "New 30 Block",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 59.95,
+        "quantity": 30,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Kirin",
+    "name": "Ichiban",
+    "vesselType": "bottle",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 57.9,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 60.99,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Kirin",
+    "name": "Ichiban",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 57.9,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 60.99,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Corona",
+    "name": "Extra Bottles 12x355mL",
+    "vesselType": "bottle",
+    "sizeMl": 355,
+    "prices": [
+      {
+        "price": 31.95,
+        "quantity": 12,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Corona",
+    "name": "Extra",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 31.95,
+        "quantity": 12,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Shepherd Neame",
+    "name": "Double Stout",
+    "vesselType": "bottle",
+    "sizeMl": 500,
+    "prices": [
+      {
+        "price": 17,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 8.99,
+        "quantity": 1,
+        "memberOffer": true
+      }
+    ]
+  },
+  {
+    "brewery": "Corona",
+    "name": "Extra Beer",
+    "vesselType": "bottle",
+    "sizeMl": 355,
+    "prices": [
+      {
+        "price": 58,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 62.95,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Corona",
+    "name": "Extra Beer",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 58,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 62.95,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Great Northern Brewing Co.",
+    "name": "Super Crisp Lager",
+    "vesselType": null,
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 98.9,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 51.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 18.95,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Coopers",
+    "name": "Best Extra Stout",
+    "vesselType": "bottle",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 79.99,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 28.99,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Coopers",
+    "name": "Best Extra Stout",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 79.99,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 28.99,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Coopers",
+    "name": "Original Pale Ale",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 57.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 24.99,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Coopers",
+    "name": "Original Pale Ale",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 57.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 24.99,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Great Northern Brewing Co.",
+    "name": "Super Crisp 3.5% Lager",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 104.9,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 54.95,
+        "quantity": 1,
+        "memberOffer": true
+      }
+    ]
+  },
+  {
+    "brewery": "Great",
+    "name": "Northern Brewing Co Super Crisp 3 5 Lager",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 104.9,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 54.95,
+        "quantity": 1,
+        "memberOffer": true
+      }
+    ]
+  },
+  {
+    "brewery": "Adnams",
+    "name": "Broadside Strong Original",
+    "vesselType": "bottle",
+    "sizeMl": 500,
+    "prices": [
+      {
+        "price": 17,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 7.99,
+        "quantity": 1,
+        "memberOffer": true
+      }
+    ]
+  },
+  {
+    "brewery": "Coopers",
+    "name": "Sparkling Ale",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 27.49,
+        "quantity": 6,
+        "memberOffer": false
+      },
+      {
+        "price": 68.95,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Coopers",
+    "name": "Sparkling Ale",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 27.49,
+        "quantity": 6,
+        "memberOffer": false
+      },
+      {
+        "price": 68.95,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Tooheys",
+    "name": "Old Dark Ale",
+    "vesselType": "bottle",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 66.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 23.49,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Tooheys",
+    "name": "Old Dark Ale",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 66.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 23.49,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Coopers",
+    "name": "Original Pale Ale",
+    "vesselType": "bottle",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 24.99,
+        "quantity": 6,
+        "memberOffer": false
+      },
+      {
+        "price": 57.95,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Coopers",
+    "name": "Original Pale Ale",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 24.99,
+        "quantity": 6,
+        "memberOffer": false
+      },
+      {
+        "price": 57.95,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Hahn",
+    "name": "Super Dry",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 64.9,
+        "quantity": 30,
+        "memberOffer": true
+      },
+      {
+        "price": 65.99,
+        "quantity": 30,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Hahn",
+    "name": "Super Dry",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 64.9,
+        "quantity": 30,
+        "memberOffer": true
+      },
+      {
+        "price": 65.99,
+        "quantity": 30,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Great Northern Brewing Co.",
+    "name": "Super Crisp 3.5% Lager",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 56.99,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 21.99,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Great",
+    "name": "Northern Brewing Co Super Crisp 3 5 Lager",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 56.99,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 21.99,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Guinness",
+    "name": "Draught",
+    "vesselType": "can",
+    "sizeMl": 470,
+    "prices": [
+      {
+        "price": 89,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 89.9,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Guinness",
+    "name": "Draught",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 89,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 89.9,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Birra Moretti",
+    "name": "Lager",
+    "vesselType": "bottle",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 21,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 23.48,
+        "quantity": 6,
+        "memberOffer": true
+      }
+    ]
+  },
+  {
+    "brewery": "Birra",
+    "name": "Moretti Lager",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 21,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 23.48,
+        "quantity": 6,
+        "memberOffer": true
+      }
+    ]
+  },
+  {
+    "brewery": "Great Northern Brewing Co.",
+    "name": "Original Lager",
+    "vesselType": null,
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 52.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 18.95,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Victoria Bitter",
+    "name": "Lager",
+    "vesselType": "bottle",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 58.9,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 58.95,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Victoria",
+    "name": "Bitter Lager",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 58.9,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 58.95,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Heineken",
+    "name": "Lager",
+    "vesselType": "bottle",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 53.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 24.49,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Heineken",
+    "name": "Lager",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 53.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 24.49,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Hahn",
+    "name": "Super Dry 3.5% 30 Block",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 56.95,
+        "quantity": 30,
+        "memberOffer": true
+      },
+      {
+        "price": 58.99,
+        "quantity": 30,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Hahn",
+    "name": "Super Dry 3 5 30 Block",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 56.95,
+        "quantity": 30,
+        "memberOffer": true
+      },
+      {
+        "price": 58.99,
+        "quantity": 30,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Victoria",
+    "name": "Bitter",
+    "vesselType": null,
+    "sizeMl": null,
+    "prices": [
+      {
+        "price": 63.95,
+        "quantity": 1,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Carlton Dry",
+    "name": "Lager",
+    "vesselType": "bottle",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 98.9,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 51.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 17.95,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Carlton Draught",
+    "name": "Lager",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 63.99,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 23.99,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Carlton Dry",
+    "name": "Lager",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 99.9,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 51.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 21.99,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Great Northern Brewing Co.",
+    "name": "Super Crisp Lager",
+    "vesselType": null,
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 98.9,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 51.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 18.95,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Asahi",
+    "name": "Super Dry",
+    "vesselType": "bottle",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 55.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 21.95,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Carlton Dry",
+    "name": "Mid 3.5%",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 59.95,
+        "quantity": 30,
+        "memberOffer": false
+      },
+      {
+        "price": 5.69,
+        "quantity": 1,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Great Northern Brewing Co.",
+    "name": "Original Lager",
+    "vesselType": null,
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 52.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 18.95,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Pure Blonde",
+    "name": "Ultra Low Carb",
+    "vesselType": "bottle",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 56.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 21.99,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Heineken",
+    "name": "Lager",
+    "vesselType": "bottle",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 53.95,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 24.49,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Stone & Wood",
+    "name": "Pacific Ale",
+    "vesselType": "bottle",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 69.95,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 83.99,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Crown",
+    "name": "Lager",
+    "vesselType": "bottle",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 59.9,
+        "quantity": 1,
+        "memberOffer": false
+      },
+      {
+        "price": 64.95,
+        "quantity": 24,
+        "memberOffer": true
+      }
+    ]
+  },
+  {
+    "brewery": "Great Northern Brewing Co.",
+    "name": "Original Lager",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 59.95,
+        "quantity": 30,
+        "memberOffer": false
+      },
+      {
+        "price": 5.09,
+        "quantity": 1,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Pure Blonde",
+    "name": "Ultra Low Carb Lager",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 57.9,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 59.95,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Hahn",
+    "name": "Super Dry 3.5% 30 Block",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 56.95,
+        "quantity": 30,
+        "memberOffer": true
+      },
+      {
+        "price": 58.99,
+        "quantity": 30,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Hahn",
+    "name": "Super Dry",
+    "vesselType": "can",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 64.9,
+        "quantity": 30,
+        "memberOffer": true
+      },
+      {
+        "price": 65.99,
+        "quantity": 30,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Hahn",
+    "name": "Super Dry Lager",
+    "vesselType": "bottle",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 51.95,
+        "quantity": 24,
+        "memberOffer": true
+      },
+      {
+        "price": 59.99,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Carlton Dry",
+    "name": "Mid 3.5%",
+    "vesselType": "bottle",
+    "sizeMl": 330,
+    "prices": [
+      {
+        "price": 56.99,
+        "quantity": 24,
+        "memberOffer": false
+      },
+      {
+        "price": 20.99,
+        "quantity": 6,
+        "memberOffer": false
+      }
+    ]
+  },
+  {
+    "brewery": "Coopers",
+    "name": "Original Pale Ale",
+    "vesselType": "bottle",
+    "sizeMl": 375,
+    "prices": [
+      {
+        "price": 24.99,
+        "quantity": 6,
+        "memberOffer": false
+      },
+      {
+        "price": 57.95,
+        "quantity": 24,
+        "memberOffer": false
+      }
+    ]
+  }
+]
