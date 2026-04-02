@@ -133,40 +133,6 @@ function parseBreweryAndNameFromProductHref(href: string): { brewery: string; na
   }
 }
 
-function collectProductTitleLines(cardText: string): string[] {
-  return cardText
-    .split(/\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean)
-    .filter((line) => !/\$\s*\d/.test(line))
-    .filter((line) => !/^from\s+\$/i.test(line))
-    .filter((line) => !isPromotionalMessage(line))
-    .filter((line) => !isUiChromeLine(line))
-    .filter((line) => !isReviewCountLine(line))
-    .filter((line) => line.length >= 2);
-}
-
-function parseBreweryAndBeerFromCard(cardText: string, href: string): { brewery: string; name: string } | null {
-  const lines = collectProductTitleLines(cardText);
-  if (lines.length >= 2) {
-    const brewery = lines[0].trim();
-    const rawProduct = lines.slice(1).join(" ");
-    const name = cleanBeerName(rawProduct);
-    if (!name || !isPlausibleProductName(name)) return null;
-    return { brewery, name };
-  }
-  if (lines.length === 1) {
-    const slug = parseBreweryAndNameFromProductHref(href);
-    if (slug) return { brewery: slug.brewery, name: slug.name };
-    const name = cleanBeerName(lines[0]);
-    if (!name || !isPlausibleProductName(name)) return null;
-    return { brewery: "", name };
-  }
-  const slugOnly = parseBreweryAndNameFromProductHref(href);
-  if (slugOnly && isPlausibleProductName(slugOnly.name)) return slugOnly;
-  return null;
-}
-
 function looksLikeProduct(o: Record<string, unknown>): boolean {
   const hasName = Boolean(o.DisplayName ?? o.Name ?? o.Title);
   const hasPriceShape =
@@ -447,6 +413,64 @@ function reconcileMemberOffersMixedQuantity(entries: PriceEntry[], fullCardText:
   worse.memberOffer = false;
 }
 
+/**
+ * Quantity hints from Dan Murphy's tile copy (grid + carousel). Uses the line and a small
+ * window so "for 3 bottles" / "Non-Member: …" on adjacent lines still match.
+ */
+function parseQuantityFromPriceBlock(price: number, block: string): number {
+  const b = block.replace(/\s+/g, " ");
+  let m = b.match(/for\s+(\d+)\s+cases?\s*\((\d+)\)/i);
+  if (m) return Number.parseInt(m[1], 10) * Number.parseInt(m[2], 10);
+  m = b.match(/for\s+(\d+)\s+cases?\b/i);
+  if (m) return Number.parseInt(m[1], 10) * 24;
+  m = b.match(/per\s+case\s+of\s+(\d+)/i);
+  if (m) return Number.parseInt(m[1], 10);
+  m = b.match(/per\s+pack\s+of\s+(\d+)/i);
+  if (m) return Number.parseInt(m[1], 10);
+  m = b.match(/for\s+(\d+)\s+bottles?/i);
+  if (m) return Number.parseInt(m[1], 10);
+  m = b.match(/block\s*\((\d+)\)/i);
+  if (m) return Number.parseInt(m[1], 10);
+  m = b.match(/case\s*\((\d+)\)/i);
+  if (m) return Number.parseInt(m[1], 10);
+  m = b.match(/pack\s*\((\d+)\)/i);
+  if (m) return Number.parseInt(m[1], 10);
+  m = b.match(/(?:case|pack)\s*\(?\s*(\d+)\s*\)?/i);
+  if (m) return Number.parseInt(m[1], 10);
+  m = b.match(/(\d+)\s*pk\b/i);
+  if (m) return Number.parseInt(m[1], 10);
+  /** "3 x $…" pack lines — not decimals like 3.5%. */
+  m = b.match(/\b(\d+)\s+x\s+\$/i);
+  if (m) return Number.parseInt(m[1], 10);
+  if (/\beach\b/i.test(b)) {
+    return price < 15 ? 1 : 24;
+  }
+  return 1;
+}
+
+function memberOfferForPriceLine(line: string, wideBlock: string): boolean {
+  if (/non[-\s]?member/i.test(line)) return false;
+  if (/member\s+offer/i.test(wideBlock) && /\$/.test(line) && !/non[-\s]?member/i.test(line)) return true;
+  return inferMemberOfferFromText(wideBlock);
+}
+
+/**
+ * Quantity for this price: same line if it already names pack/case/each; otherwise join the
+ * next line so split tiles like `$17` + `for 3 bottles` still work — but do not append the
+ * following *price* row (`$68.95 case (24)`), or `case (24)` wins over `pack (6)`.
+ */
+function narrowQuantityContext(lines: string[], i: number): string {
+  const line = lines[i];
+  const next = lines[i + 1] ?? "";
+  const lineHasPackaging =
+    /\$[\s\S]*\b(pack|case|each|block)\b/i.test(line) ||
+    /\$[\s\S]*\bfor\s+\d+\s+(bottles?|cases?)/i.test(line) ||
+    /\$[\s\S]*\bper\s+(pack|case)\s+of\b/i.test(line);
+  if (lineHasPackaging) return line;
+  if (next && !/^\$/.test(next)) return `${line} ${next}`.replace(/\s+/g, " ").trim();
+  return line;
+}
+
 function parsePricesFromCardText(text: string): PriceEntry[] {
   const lines = text
     .split(/\n+/)
@@ -456,25 +480,27 @@ function parsePricesFromCardText(text: string): PriceEntry[] {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     if (!/\$/.test(line)) continue;
-    const lo = Math.max(0, i - 2);
+    const lo = Math.max(0, i - 4);
     const hi = Math.min(lines.length, i + 3);
-    const context = lines.slice(lo, hi).join(" ").replace(/\s+/g, " ").trim();
-    const memberOffer = inferMemberOfferFromText(context);
-    const m = line.match(/\$\s*(\d+(?:\.\d{2})?)/);
-    if (!m) continue;
-    const price = Number.parseFloat(m[1]);
-    if (!Number.isFinite(price) || price <= 0) continue;
-    let quantity = 1;
-    const caseM = line.match(/(?:case|pack)\s*\(?\s*(\d+)\s*\)?/i);
-    const pkM = line.match(/(\d+)\s*pk\b/i);
-    const eachM = line.match(/(\d+)\s*x\s*/i);
-    if (caseM) quantity = Number.parseInt(caseM[1], 10);
-    else if (pkM) quantity = Number.parseInt(pkM[1], 10);
-    else if (eachM) quantity = Number.parseInt(eachM[1], 10);
-    entries.push({ price, quantity: quantity || 1, memberOffer });
+    const wideBlock = lines.slice(lo, hi).join(" ").replace(/\s+/g, " ").trim();
+    const narrowBlock = narrowQuantityContext(lines, i);
+    const memberOffer = memberOfferForPriceLine(line, wideBlock);
+    const priceMatches = [...line.matchAll(/\$\s*(\d+(?:\.\d{2})?)/g)];
+    for (const m of priceMatches) {
+      const price = Number.parseFloat(m[1]);
+      if (!Number.isFinite(price) || price <= 0) continue;
+      const quantity = parseQuantityFromPriceBlock(price, narrowBlock);
+      entries.push({ price, quantity: quantity || 1, memberOffer });
+    }
   }
-  reconcileMemberOffersForSameQuantity(entries);
-  reconcileMemberOffersMixedQuantity(entries, text);
+  const hasExplicitNonMember = /non[-\s]?member/i.test(text);
+  const hasMemberOffer = /member\s+offer/i.test(text);
+  if (!hasExplicitNonMember) {
+    reconcileMemberOffersForSameQuantity(entries);
+    if (hasMemberOffer) {
+      reconcileMemberOffersMixedQuantity(entries, text);
+    }
+  }
   return dedupePriceEntries(entries);
 }
 
@@ -499,57 +525,98 @@ function isReviewCountLine(line: string): boolean {
 
 const MAX_PRICE_LINES_PER_PRODUCT = 12;
 
+type DomProductRow = {
+  breweryLine: string;
+  subtitle: string;
+  href: string;
+  cardText: string;
+};
+
+function resolveBreweryAndName(row: DomProductRow): { brewery: string; name: string } | null {
+  let brewery = row.breweryLine.trim();
+  let name = cleanBeerName(row.subtitle);
+  if (!brewery) return null;
+  if (!name) {
+    const slug = parseBreweryAndNameFromProductHref(row.href);
+    if (slug) {
+      brewery = slug.brewery;
+      name = slug.name;
+    }
+  }
+  if (name !== "" && !isPlausibleProductName(name)) return null;
+  return { brewery, name };
+}
+
 async function extractProductsFromDom(page: Page): Promise<CanonicalProduct[]> {
-  const anchors = page.locator('a[href*="/product/"]');
-  const n = await anchors.count();
-  const seenHref = new Set<string>();
+  const rows = await page.evaluate(() => {
+    const out: DomProductRow[] = [];
+    const carousel = document.querySelector("dd-product-carousel");
+    if (carousel) {
+      for (const root of Array.from(carousel.querySelectorAll(".product--dm"))) {
+        const breweryLine =
+          root.querySelector(".product__title--primary")?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+        const subtitle =
+          root.querySelector(".product__title--secondary")?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+        const link = root.querySelector('a[href*="/product/"]') as HTMLAnchorElement | null;
+        const href = link?.href ?? "";
+        if (!href || !breweryLine) continue;
+        out.push({
+          breweryLine,
+          subtitle,
+          href,
+          cardText: (root as HTMLElement).innerText ?? "",
+        });
+      }
+    }
+    for (const card of Array.from(document.querySelectorAll("#results shop-product-card"))) {
+      const link = card.querySelector('h2.not-offers a[href*="/product/"]') as HTMLAnchorElement | null;
+      if (!link) continue;
+      const breweryLine =
+        card.querySelector("h2.not-offers span.title")?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+      const subtitle =
+        card.querySelector("h2.not-offers span.subtitle")?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+      const href = link.href;
+      if (!href || !breweryLine) continue;
+      out.push({
+        breweryLine,
+        subtitle,
+        href,
+        cardText: (card as HTMLElement).innerText ?? "",
+      });
+    }
+    return out;
+  });
+
+  const seenCanonical = new Set<string>();
   const out: CanonicalProduct[] = [];
 
-  for (let i = 0; i < n; i++) {
-    const a = anchors.nth(i);
-    /** "Inspired By Your Browsing History" lives in <shop-rr-carousel>. */
-    const inBrowsingHistoryCarousel = await a.evaluate(
-      (el) => (el as Element).closest("shop-rr-carousel, .shop-rr-carousel") != null,
-    );
-    if (inBrowsingHistoryCarousel) continue;
-
-    const href = (await a.getAttribute("href")) ?? "";
+  for (const row of rows) {
+    const href = row.href;
     if (!href.includes("/product/")) continue;
     const lower = href.toLowerCase();
     if (lower.includes("gift") || lower.includes("egift")) continue;
-    const full = href.startsWith("http") ? href : `https://www.danmurphys.com.au${href}`;
-    if (seenHref.has(full)) continue;
-    seenHref.add(full);
 
-    // Smallest ancestor with a price that still looks like one tile (avoids banner + whole grid).
-    const cardText = await a.evaluate((el) => {
-      const MAX_CARD_CHARS = 2000;
-      const MAX_CARD_LINES = 35;
-      const candidates: HTMLElement[] = [];
-      for (let cur = (el as HTMLElement).parentElement; cur && cur !== document.body; cur = cur.parentElement) {
-        const t = cur.innerText ?? "";
-        if (!t.includes("$")) continue;
-        candidates.push(cur);
-      }
-      if (candidates.length === 0) return "";
-      candidates.sort((x, y) => (x.innerText?.length ?? 0) - (y.innerText?.length ?? 0));
-      for (const c of candidates) {
-        const t = (c.innerText ?? "").trim();
-        const lines = t.split(/\n+/).filter(Boolean);
-        if (t.length >= 40 && t.length <= MAX_CARD_CHARS && lines.length <= MAX_CARD_LINES) return t;
-      }
-      return "";
-    });
+    let canonical: string;
+    try {
+      const u = new URL(href);
+      canonical = `${u.origin}${u.pathname}`;
+    } catch {
+      continue;
+    }
+    if (seenCanonical.has(canonical)) continue;
+    seenCanonical.add(canonical);
 
-    if (!cardText || !/\$/.test(cardText)) continue;
+    if (!/\$/.test(row.cardText)) continue;
 
-    const parsed = parseBreweryAndBeerFromCard(cardText, full);
+    const parsed = resolveBreweryAndName(row);
     if (!parsed) continue;
     const { brewery, name } = parsed;
-    const prices = parsePricesFromCardText(cardText);
+
+    const prices = parsePricesFromCardText(row.cardText);
     if (prices.length === 0) continue;
     if (prices.length > MAX_PRICE_LINES_PER_PRODUCT) continue;
-    const textForMeta = `${brewery} ${name} ${cardText}`;
+
+    const textForMeta = `${brewery} ${row.subtitle} ${row.cardText}`;
     out.push({
       brewery,
       name,

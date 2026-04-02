@@ -463,24 +463,6 @@
     ]
   },
   {
-    "brewery": "Guinness",
-    "name": "Draught",
-    "vesselType": "can",
-    "sizeMl": 470,
-    "prices": [
-      {
-        "price": 89,
-        "quantity": 24,
-        "memberOffer": true
-      },
-      {
-        "price": 89.9,
-        "quantity": 24,
-        "memberOffer": false
-      }
-    ]
-  },
-  {
     "brewery": "Birra Moretti",
     "name": "Lager",
     "vesselType": "bottle",
@@ -489,12 +471,12 @@
       {
         "price": 21,
         "quantity": 6,
-        "memberOffer": false
+        "memberOffer": true
       },
       {
         "price": 23.48,
         "quantity": 6,
-        "memberOffer": true
+        "memberOffer": false
       }
     ]
   },
@@ -573,8 +555,8 @@
   {
     "brewery": "Victoria",
     "name": "Bitter",
-    "vesselType": null,
-    "sizeMl": null,
+    "vesselType": "can",
+    "sizeMl": 375,
     "prices": [
       {
         "price": 63.95,
