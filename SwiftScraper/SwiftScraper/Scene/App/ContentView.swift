@@ -23,6 +23,16 @@ struct ContentView: View {
                         .foregroundStyle(.secondary)
                         .textSelection(.enabled)
                 }
+                if !viewModel.parsedBeers.isEmpty {
+                    ScrollView {
+                        LazyVStack(alignment: .leading, spacing: 6) {
+                            ForEach(Array(viewModel.parsedBeers.enumerated()), id: \.offset) { _, beer in
+                                BeerCell(beer: beer)
+                            }
+                        }
+                    }
+                    .frame(maxHeight: 220)
+                }
             }
             .padding(10)
             .frame(maxWidth: .infinity)
@@ -37,6 +47,9 @@ struct ContentView: View {
             }
             Button("Show more") {
                 Task { await viewModel.clickShowMore() }
+            }
+            Button("Parse beers") {
+                Task { await viewModel.parseBeersFromCurrentPage() }
             }
             Spacer(minLength: 0)
         }

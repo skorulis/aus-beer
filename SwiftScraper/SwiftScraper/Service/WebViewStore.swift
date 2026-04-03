@@ -54,6 +54,11 @@ final class WebViewStore: ObservableObject {
         }
     }
 
+    /// Current page HTML (`document.documentElement.outerHTML`).
+    func currentOuterHTML() async throws -> String {
+        try await captureOuterHTML()
+    }
+
     /// Writes `document.documentElement.outerHTML` to a new file in the system temporary directory.
     func saveCurrentHTMLToTemporaryFile() async throws -> URL {
         let html = try await captureOuterHTML()
