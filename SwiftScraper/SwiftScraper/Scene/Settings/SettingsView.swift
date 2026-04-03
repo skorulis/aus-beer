@@ -9,6 +9,7 @@ import SwiftUI
 @MainActor struct SettingsView {
 
     @State var viewModel: SettingsViewModel
+    @State private var confirmClearDatabase = false
 }
 
 // MARK: - Rendering
@@ -47,6 +48,37 @@ extension SettingsView: View {
                         .foregroundStyle(.red)
                 }
             }
+
+            Section {
+                Text(
+                    "Removes every brewery, beer, price point, and supplier from the local database on this Mac. HTML export settings and files are not affected."
+                )
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+                Button("Clear all database data…", role: .destructive) {
+                    confirmClearDatabase = true
+                }
+
+                if let message = viewModel.clearDatabaseErrorMessage {
+                    Text(message)
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
+            }
+        }
+        .confirmationDialog(
+            "Clear all database data?",
+            isPresented: $confirmClearDatabase,
+            titleVisibility: .visible
+        ) {
+            Button("Clear all data", role: .destructive) {
+                viewModel.clearAllDatabaseData()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This cannot be undone.")
         }
         .formStyle(.grouped)
         .padding()

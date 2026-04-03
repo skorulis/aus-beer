@@ -8,16 +8,31 @@ import KnitMacros
 @MainActor @Observable final class SettingsViewModel {
 
     private let htmlExportDirectory: HTMLExportDirectoryStore
+    private let sqlStore: SQLStore
 
     var lastErrorMessage: String?
+    var clearDatabaseErrorMessage: String?
 
     var exportFolderDisplayPath: String {
         htmlExportDirectory.folderDisplaySummary
     }
 
     @Resolvable<Resolver>
-    init(htmlExportDirectory: HTMLExportDirectoryStore) {
+    init(
+        htmlExportDirectory: HTMLExportDirectoryStore,
+        sqlStore: SQLStore,
+    ) {
         self.htmlExportDirectory = htmlExportDirectory
+        self.sqlStore = sqlStore
+    }
+
+    func clearAllDatabaseData() {
+        clearDatabaseErrorMessage = nil
+        do {
+            try sqlStore.clearAllUserData()
+        } catch {
+            clearDatabaseErrorMessage = error.localizedDescription
+        }
     }
 
     func chooseExportFolder() {
