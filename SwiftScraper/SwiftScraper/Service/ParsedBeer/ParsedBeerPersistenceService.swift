@@ -27,12 +27,13 @@ final class ParsedBeerPersistenceService: Sendable {
         self.sqlStore = sqlStore
     }
 
-    func persistParsedBeers(_ beers: [ParsedBeer]) throws -> ParsedBeerPersistenceResult {
+    func persistParsedBeers(_ beers: [ParsedBeer], supplier: BeerSite) throws -> ParsedBeerPersistenceResult {
         let now = Date()
         return try sqlStore.dbQueue.write { db in
             var breweriesInserted = 0
             var newBeersInserted = 0
             var existingBeersSkipped = 0
+            let supplierId = try supplierIdEnsuringExists(db: db, name: supplier.supplierName)
 
             for parsed in beers {
                 let trimmedName = parsed.name.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -61,8 +62,17 @@ final class ParsedBeerPersistenceService: Sendable {
                 let instanceId = instanceRow.id
 
                 for price in parsed.prices {
+                    if let previous = try latestPrice(
+                        db: db,
+                        beerInstance: instanceId,
+                        supplier: supplierId,
+                        quantity: price.quantity
+                    ), !Self.priceChanged(from: previous, to: price.price) {
+                        continue
+                    }
                     var priceRow = PricePointRecord(
                         beerInstance: instanceId,
+                        supplier: supplierId,
                         price: price.price,
                         quantity: price.quantity,
                         date: now
@@ -83,6 +93,16 @@ final class ParsedBeerPersistenceService: Sendable {
 
     private static let unknownBreweryPlaceholder = "Unknown brewery"
 
+    private func supplierIdEnsuringExists(db: Database, name: String) throws -> Int64 {
+        let sql = "SELECT rowId FROM supplier WHERE name = ?"
+        if let id = try Int64.fetchOne(db, sql: sql, arguments: [name]) {
+            return id
+        }
+        var row = SupplierRecord(name: name)
+        try row.insert(db)
+        return row.id
+    }
+
     /// Returns `(rowId, didInsert)`.
     private func breweryIdEnsuringExists(db: Database, name: String) throws -> (Int64, Bool) {
         let sql = "SELECT rowId FROM brewery WHERE name = ?"
@@ -97,6 +117,27 @@ final class ParsedBeerPersistenceService: Sendable {
     private func beerExists(db: Database, breweryId: Int64, name: String) throws -> Bool {
         let sql = "SELECT rowId FROM beer WHERE brewery = ? AND name = ? LIMIT 1"
         return try Int64.fetchOne(db, sql: sql, arguments: [breweryId, name]) != nil
+    }
+
+    /// Most recent stored price for this instance, supplier, and pack quantity, if any.
+    private func latestPrice(
+        db: Database,
+        beerInstance: Int64,
+        supplier: Int64,
+        quantity: Int
+    ) throws -> Double? {
+        let sql = """
+            SELECT price FROM price_points
+            WHERE beerInstance = ? AND supplier = ? AND quantity = ?
+            ORDER BY date DESC
+            LIMIT 1
+            """
+        return try Double.fetchOne(db, sql: sql, arguments: [beerInstance, supplier, quantity])
+    }
+
+    /// True when the new price should be persisted (differs in cents from the previous value).
+    private static func priceChanged(from previous: Double, to new: Double) -> Bool {
+        (previous * 100).rounded() != (new * 100).rounded()
     }
 }
 

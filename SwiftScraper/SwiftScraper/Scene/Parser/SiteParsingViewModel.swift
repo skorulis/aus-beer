@@ -68,7 +68,7 @@ extension SiteParsingViewModel {
             let noun = beers.count == 1 ? "beer" : "beers"
             let persistenceSummary: String
             do {
-                let r = try parsedBeerPersistence.persistParsedBeers(beers)
+                let r = try parsedBeerPersistence.persistParsedBeers(beers, supplier: BeerSite.danMurphys)
                 if r.newBeersInserted == 0 && r.breweriesInserted == 0 {
                     persistenceSummary = " DB: no new beers (\(r.existingBeersSkipped) already saved)."
                 } else {

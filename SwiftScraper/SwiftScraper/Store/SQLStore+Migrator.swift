@@ -39,6 +39,21 @@ extension SQLStore {
                 t.column("date", .datetime).notNull()
             }
         }
+        migrator.registerMigration("v2_supplier") { db in
+            try db.create(table: "supplier", ifNotExists: true) { t in
+                t.autoIncrementedPrimaryKey("rowId")
+                t.column("name", .text).notNull().unique()
+            }
+            var placeholder = SupplierRecord(name: "Unknown supplier")
+            try placeholder.insert(db)
+            let defaultSupplierId = placeholder.id
+            try db.alter(table: "price_points") { t in
+                t.add(column: "supplier", .integer)
+                    .notNull()
+                    .defaults(to: defaultSupplierId)
+                    .references("supplier", column: "rowId", onDelete: .restrict)
+            }
+        }
         return migrator
     }()
 }

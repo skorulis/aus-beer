@@ -23,4 +23,12 @@ public enum BeerSite: String, Codable, Sendable {
             return DanMurphysParser()
         }
     }
+
+    /// Retailer name stored on `SupplierRecord` / `price_points.supplier`.
+    public var supplierName: String {
+        switch self {
+        case .danMurphys:
+            "Dan Murphy's"
+        }
+    }
 }

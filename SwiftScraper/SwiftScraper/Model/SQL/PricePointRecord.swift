@@ -9,6 +9,7 @@ struct PricePointRecord: Codable, Identifiable, Sendable, MutablePersistableReco
 
     private var rowId: Int64?
     let beerInstance: Int64
+    let supplier: Int64
     let price: Double
     let quantity: Int
     let date: Date
@@ -16,12 +17,14 @@ struct PricePointRecord: Codable, Identifiable, Sendable, MutablePersistableReco
     init(
         rowId: Int64? = nil,
         beerInstance: Int64,
+        supplier: Int64,
         price: Double,
         quantity: Int,
         date: Date
     ) {
         self.rowId = rowId
         self.beerInstance = beerInstance
+        self.supplier = supplier
         self.price = price
         self.quantity = quantity
         self.date = date
@@ -39,6 +42,6 @@ extension PricePointRecord: TableRecord {
 extension PricePointRecord: FetchableRecord {
 
     enum Columns: String, ColumnExpression {
-        case rowId, beerInstance, price, quantity, date
+        case rowId, beerInstance, supplier, price, quantity, date
     }
 }
