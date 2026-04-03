@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FA4D2D092F7F534900EE44C6 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = FA4D2D082F7F534900EE44C6 /* SwiftSoup */; };
 		FA4D2D4B2F7F5C7600EE44C6 /* Knit in Frameworks */ = {isa = PBXBuildFile; productRef = FA4D2D4A2F7F5C7600EE44C6 /* Knit */; };
 		FA4D2D4D2F7F5C7600EE44C6 /* KnitMacros in Frameworks */ = {isa = PBXBuildFile; productRef = FA4D2D4C2F7F5C7600EE44C6 /* KnitMacros */; };
 		FA4D2FA22F7F61A000EE44C6 /* knitconfig.json in Resources */ = {isa = PBXBuildFile; fileRef = FA4D2FA12F7F61A000EE44C6 /* knitconfig.json */; };
+		FA4D2FA82F7F620000EE44C6 /* SwiftScraperCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA4D2FA72F7F620000EE44C6 /* SwiftScraperCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +49,7 @@
 			files = (
 				FA4D2D4B2F7F5C7600EE44C6 /* Knit in Frameworks */,
 				FA4D2D4D2F7F5C7600EE44C6 /* KnitMacros in Frameworks */,
-				FA4D2D092F7F534900EE44C6 /* SwiftSoup in Frameworks */,
+				FA4D2FA82F7F620000EE44C6 /* SwiftScraperCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,7 +103,7 @@
 			);
 			name = SwiftScraper;
 			packageProductDependencies = (
-				FA4D2D082F7F534900EE44C6 /* SwiftSoup */,
+				FA4D2FA72F7F620000EE44C6 /* SwiftScraperCore */,
 				FA4D2D4A2F7F5C7600EE44C6 /* Knit */,
 				FA4D2D4C2F7F5C7600EE44C6 /* KnitMacros */,
 			);
@@ -163,8 +163,8 @@
 			mainGroup = FA4D2CEA2F7F52A900EE44C6;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				FA4D2D072F7F534900EE44C6 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				FA4D2D492F7F5C7600EE44C6 /* XCRemoteSwiftPackageReference "knit" */,
+				FA4D2FA62F7F620000EE44C6 /* XCLocalSwiftPackageReference "SwiftScraperCore" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA4D2CF42F7F52A900EE44C6 /* Products */;
@@ -483,15 +483,14 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		FA4D2D072F7F534900EE44C6 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.13.4;
-			};
+/* Begin XCLocalSwiftPackageReference section */
+		FA4D2FA62F7F620000EE44C6 /* XCLocalSwiftPackageReference "SwiftScraperCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = SwiftScraperCore;
 		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
 		FA4D2D492F7F5C7600EE44C6 /* XCRemoteSwiftPackageReference "knit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/cashapp/knit";
@@ -503,11 +502,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FA4D2D082F7F534900EE44C6 /* SwiftSoup */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = FA4D2D072F7F534900EE44C6 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
-			productName = SwiftSoup;
-		};
 		FA4D2D4A2F7F5C7600EE44C6 /* Knit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA4D2D492F7F5C7600EE44C6 /* XCRemoteSwiftPackageReference "knit" */;
@@ -522,6 +516,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA4D2D492F7F5C7600EE44C6 /* XCRemoteSwiftPackageReference "knit" */;
 			productName = "plugin:KnitBuildPlugin";
+		};
+		FA4D2FA72F7F620000EE44C6 /* SwiftScraperCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA4D2FA62F7F620000EE44C6 /* XCLocalSwiftPackageReference "SwiftScraperCore" */;
+			productName = SwiftScraperCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -2,22 +2,22 @@
 
 import Foundation
 
-enum BeerSite: String, Codable {
-    
+public enum BeerSite: String, Codable, Sendable {
+
     case danMurphys
-    
-    var rootPage: String {
+
+    public var rootPage: String {
         switch self {
         case .danMurphys:
             "https://www.danmurphys.com.au/beer/all"
         }
     }
-    
-    var rootURL: URL {
+
+    public var rootURL: URL {
         URL(string: rootPage)!
     }
-    
-    var parser: SiteParser {
+
+    public var parser: SiteParser {
         switch self {
         case .danMurphys:
             return DanMurphysParser()

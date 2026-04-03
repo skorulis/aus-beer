@@ -2,8 +2,9 @@
 
 import SwiftUI
 import Knit
+import SwiftScraperCore
 
-private let danMurphysBeerListURL = URL(string: "https://www.danmurphys.com.au/beer/all")!
+private let danMurphysBeerListURL = BeerSite.danMurphys.rootURL
 
 struct ContentView: View {
     

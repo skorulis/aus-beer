@@ -66,11 +66,18 @@ By default, the Dan Murphy’s adapter scrapes the **first page** of [`/beer/all
 
 ## Swift app (`SwiftScraper/`)
 
-Native macOS client and parsers live under [`SwiftScraper/`](SwiftScraper/). You need **Xcode** (matching the project’s deployment target) on macOS.
+Native macOS client lives under [`SwiftScraper/`](SwiftScraper/); shared models and HTML parsers are in the local Swift package [`SwiftScraper/SwiftScraperCore`](SwiftScraper/SwiftScraperCore/). You need **Xcode** (matching the project’s deployment target) on macOS.
 
 ### Run unit tests from the command line
 
-From the repository root:
+Parser and model tests (Swift Testing) run via Swift Package Manager:
+
+```bash
+cd SwiftScraper/SwiftScraperCore
+swift test
+```
+
+The Xcode app scheme also runs a small UI test bundle:
 
 ```bash
 cd SwiftScraper

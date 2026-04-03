@@ -2,6 +2,6 @@
 
 import Foundation
 
-protocol SiteParser {
+public protocol SiteParser: Sendable {
     func parse(html: String) -> [BeerRecord]
 }

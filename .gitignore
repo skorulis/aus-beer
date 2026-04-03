@@ -2,3 +2,4 @@ node_modules/
 dist/
 *.log
 SwiftScraper/SwiftScraper.xcodeproj/project.xcworkspace/xcuserdata
+SwiftScraper/SwiftScraperCore/.build
