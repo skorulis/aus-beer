@@ -48,7 +48,8 @@ extension SiteParsingViewModel {
 
     func clickShowMore() async {
         do {
-            let clicked = try await webViewStore.clickDanMurphysLoadMoreIfPresent()
+            let script = site.parser.pressNextPageScript()
+            let clicked = try await webViewStore.executeClick(script)
             toolbarStatus = clicked ? "Tapped Show more." : "No Show more button on the page."
         } catch {
             toolbarStatus = "Error: \(error.localizedDescription)"
@@ -59,7 +60,8 @@ extension SiteParsingViewModel {
         autoLoadAllBeers = true
         while autoLoadAllBeers {
             do {
-                let clicked = try await webViewStore.clickDanMurphysLoadMoreIfPresent()
+                let script = site.parser.pressNextPageScript()
+                let clicked = try await webViewStore.executeClick(script)
                 if !clicked {
                     toolbarStatus = "No Show more button on the page."
                     break
@@ -76,11 +78,11 @@ extension SiteParsingViewModel {
     func parseBeersFromCurrentPage() async {
         do {
             let html = try await webViewStore.currentOuterHTML()
-            let beers = BeerSite.danMurphys.parser.parse(html: html)
+            let beers = site.parser.parse(html: html)
             let noun = beers.count == 1 ? "beer" : "beers"
             let persistenceSummary: String
             do {
-                let r = try parsedBeerPersistence.persistParsedBeers(beers, supplier: BeerSite.danMurphys)
+                let r = try parsedBeerPersistence.persistParsedBeers(beers, supplier: site)
                 if r.newBeersInserted == 0 && r.breweriesInserted == 0 {
                     persistenceSummary = " DB: no new beers (\(r.existingBeersSkipped) already saved)."
                 } else {

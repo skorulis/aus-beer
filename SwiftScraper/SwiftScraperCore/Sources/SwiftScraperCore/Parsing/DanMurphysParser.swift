@@ -79,6 +79,27 @@ public final class DanMurphysParser: SiteParser, @unchecked Sendable {
 
         return out
     }
+    
+    
+}
+
+// MARK: - Next page
+
+extension DanMurphysParser {
+    /// Same selector as `DANMURPHYS_LOAD_MORE_BUTTON_SELECTOR` in `scraper/src/sites/danmurphys.ts`.
+    private static let danMurphysLoadMoreButtonSelector = ".infinite-loader__load-more-button"
+    
+    public func pressNextPageScript() -> String {
+        let script = """
+        (function() {
+          var el = document.querySelector('\(Self.danMurphysLoadMoreButtonSelector)');
+          if (!el) { return false; }
+          el.click();
+          return true;
+        })()
+        """
+        return script
+    }
 }
 
 // MARK: - DOM row

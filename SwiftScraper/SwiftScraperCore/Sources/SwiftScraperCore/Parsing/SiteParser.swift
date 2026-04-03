@@ -4,4 +4,5 @@ import Foundation
 
 public protocol SiteParser: Sendable {
     func parse(html: String) -> [ParsedBeer]
+    func pressNextPageScript() -> String
 }
