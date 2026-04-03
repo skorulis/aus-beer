@@ -6,8 +6,24 @@ import KnitMacros
 
 @MainActor @Observable final class ContentViewModel {
     
+    let webViewStore: WebViewStore
+    
+    var toolbarStatus: String?
+    
     @Resolvable<Resolver>
-    init() {
-        
+    init(webViewStore: WebViewStore) {
+        self.webViewStore = webViewStore
+    }
+}
+
+
+extension ContentViewModel {
+    func saveHTMLToTmp() async {
+        do {
+            let url = try await webViewStore.saveCurrentHTMLToTemporaryFile()
+            toolbarStatus = url.path
+        } catch {
+            toolbarStatus = "Error: \(error.localizedDescription)"
+        }
     }
 }

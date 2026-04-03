@@ -12,10 +12,25 @@ final class SwiftScraperAssembly: AutoInitModuleAssembly {
     @MainActor
     func assemble(container: Container<Resolver>) {
         registerViewModels(container: container)
+        registerStores(container: container)
     }
     
     @MainActor
     private func registerViewModels(container: Container<TargetResolver>) {
         container.register(ContentViewModel.self) { ContentViewModel.make(resolver: $0) }
+    }
+    
+    @MainActor
+    private func registerStores(container: Container<TargetResolver>) {
+        container.register(WebViewStore.self) { _ in WebViewStore() }
+            .inObjectScope(.container)
+    }
+    
+    
+}
+
+extension SwiftScraperAssembly {
+    @MainActor static func testing() -> ScopedModuleAssembler<Resolver> {
+        ScopedModuleAssembler<Resolver>([SwiftScraperAssembly()])
     }
 }

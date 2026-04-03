@@ -17,7 +17,7 @@ struct SwiftScraperApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()//viewModel: assembler.resolver.contentViewModel())
+            ContentView(viewModel: assembler.resolver.contentViewModel())
         }
     }
 }
