@@ -9,7 +9,7 @@ import KnitMacros
 
     private let sqlStore: SQLStore
 
-    var beers: [BeerRecord] = []
+    var beerInstances: [BeerInstanceListRow] = []
     var lastErrorMessage: String?
 
     @Resolvable<Resolver>
@@ -22,8 +22,8 @@ extension BeerListViewModel {
 
     func loadBeers() {
         do {
-            beers = try sqlStore.dbQueue.read { db in
-                try BeerRecord.fetchAll(db)
+            beerInstances = try sqlStore.dbQueue.read { db in
+                try BeerInstanceListRow.fetchAll(db, sql: BeerInstanceListRow.selectSQL)
             }
             lastErrorMessage = nil
         } catch {

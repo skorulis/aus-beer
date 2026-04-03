@@ -2,6 +2,7 @@
 
 import Foundation
 import Knit
+import SwiftScraperCore
 import SwiftUI
 
 // MARK: - Memory footprint
@@ -24,8 +25,20 @@ extension BeerListView: View {
                     .padding([.horizontal, .top])
             }
 
-            List(viewModel.beers) { beer in
-                Text(beer.name)
+            List(viewModel.beerInstances) { row in
+                HStack(alignment: .firstTextBaseline) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(row.beer.name)
+                            .font(.subheadline)
+                        Text(row.brewery.name)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer(minLength: 8)
+                    Text("\(row.instance.size) ml · \(row.instance.vessel.rawValue)")
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                }
             }
         }
         .onAppear {
