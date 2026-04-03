@@ -16,12 +16,7 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             VStack(alignment: .leading, spacing: 6) {
-                HStack(spacing: 12) {
-                    Button("Save HTML to tmp") {
-                        Task { await viewModel.saveHTMLToTmp() }
-                    }
-                    Spacer(minLength: 0)
-                }
+                actions
                 if let toolbarStatus = viewModel.toolbarStatus {
                     Text(toolbarStatus)
                         .font(.caption)
@@ -32,6 +27,15 @@ struct ContentView: View {
             .padding(10)
             .frame(maxWidth: .infinity)
             .background(.bar)
+        }
+    }
+    
+    private var actions: some View {
+        HStack(spacing: 12) {
+            Button("Save HTML to tmp") {
+                Task { await viewModel.saveHTMLToTmp() }
+            }
+            Spacer(minLength: 0)
         }
     }
 
