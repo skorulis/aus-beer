@@ -18,6 +18,11 @@ struct ContentView: View {
                     Label("Parsing", systemImage: "globe")
                 }
             
+            BeerListView(viewModel: resolver!.beerListViewModel())
+                .tabItem {
+                    Label("Beers", systemImage: "list.bullet")
+                }
+            
             SettingsView(viewModel: resolver!.settingsViewModel())
                 .tabItem {
                     Label("Settings", systemImage: "gear")

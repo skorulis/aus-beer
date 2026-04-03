@@ -21,6 +21,7 @@ final class SwiftScraperAssembly: AutoInitModuleAssembly {
         container.register(ContentViewModel.self) { ContentViewModel.make(resolver: $0) }
         container.register(SiteParsingViewModel.self) { SiteParsingViewModel.make(resolver: $0) }
         container.register(SettingsViewModel.self) { SettingsViewModel.make(resolver: $0) }
+        container.register(BeerListViewModel.self) { BeerListViewModel.make(resolver: $0) }
     }
     
     @MainActor

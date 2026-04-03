@@ -3,7 +3,7 @@
 import Foundation
 import GRDB
 
-struct BeerRecord: Codable, Identifiable, Sendable, MutablePersistableRecord {
+struct BeerRecord: Codable, Identifiable, Sendable, MutablePersistableRecord, FetchableRecord {
 
     var id: Int64 { rowId ?? -1 }
 
@@ -33,7 +33,7 @@ extension BeerRecord: TableRecord {
     static var databaseTableName: String { "beer" }
 }
 
-extension BeerRecord: FetchableRecord {
+extension BeerRecord {
 
     enum Columns: String, ColumnExpression {
         case rowId, brewery, name, untappdID
