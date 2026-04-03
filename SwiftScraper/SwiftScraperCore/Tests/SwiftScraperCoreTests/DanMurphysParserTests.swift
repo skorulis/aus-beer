@@ -36,8 +36,7 @@ private func sortForCompare(_ products: [BeerRecord]) -> [BeerRecord] {
 
 struct DanMurphysParserTests {
 
-    /// Re-enable once `DanMurphysParser.parse` is implemented (currently returns no rows).
-    @Test(.disabled("Parser not implemented")) func parseFixtureMatchesExpectedJSON() throws {
+    @Test func parseFixtureMatchesExpectedJSON() throws {
         let htmlURL = fixturesDirectory.appendingPathComponent("danmurphys-beer-all.html")
         let expectedURL = fixturesDirectory.appendingPathComponent("danmurphys-beer-all.expected.json")
 

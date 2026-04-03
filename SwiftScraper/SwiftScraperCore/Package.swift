@@ -10,8 +10,16 @@ let package = Package(
     products: [
         .library(name: "SwiftScraperCore", targets: ["SwiftScraperCore"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.7.0"),
+    ],
     targets: [
-        .target(name: "SwiftScraperCore"),
+        .target(
+            name: "SwiftScraperCore",
+            dependencies: [
+                .product(name: "SwiftSoup", package: "SwiftSoup"),
+            ]
+        ),
         .testTarget(
             name: "SwiftScraperCoreTests",
             dependencies: ["SwiftScraperCore"],

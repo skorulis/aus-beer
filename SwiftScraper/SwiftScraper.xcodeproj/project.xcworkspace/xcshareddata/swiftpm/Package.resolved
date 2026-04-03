@@ -1,5 +1,5 @@
 {
-  "originHash" : "e42008edd955d0325df0dddc8c94a3d3c51d3cb889d7512fab781c85415cd5b1",
+  "originHash" : "64ef88dded13bad2adf1c5a7c0ce4e1594aafbf214ad08709461973a00db7db4",
   "pins" : [
     {
       "identity" : "knit",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "f99ae8aa18f0cf0d53481901f88a0991dc3bd4a2",
         "version" : "601.0.1"
+      }
+    },
+    {
+      "identity" : "swiftsoup",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/scinfu/SwiftSoup.git",
+      "state" : {
+        "revision" : "6c7915e16f729857aec3e99068c361e58a00ed68",
+        "version" : "2.13.4"
       }
     }
   ],
