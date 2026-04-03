@@ -1,6 +1,15 @@
 {
-  "originHash" : "7ce8c80273f496cd86e408237d7a645ab7dad6ffc5f14387e155def2ad660796",
+  "originHash" : "37744c26ba6035a80f966f7ffe34377b9be75ba6c025144e79bdf2d8a6fe269e",
   "pins" : [
+    {
+      "identity" : "askcoordinator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/skorulis/ASKCoordinator",
+      "state" : {
+        "branch" : "main",
+        "revision" : "ec2706b419a6c1c9b8aede46f5b0d87b8c4bf35b"
+      }
+    },
     {
       "identity" : "grdb.swift",
       "kind" : "remoteSourceControl",

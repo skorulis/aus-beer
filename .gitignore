@@ -4,3 +4,5 @@ dist/
 *.log
 SwiftScraper/SwiftScraper.xcodeproj/project.xcworkspace/xcuserdata
 SwiftScraper/SwiftScraperCore/.build
+SwiftScraper/SwiftScraper.xcodeproj/xcuserdata
+SwiftScraper/SwiftScraperCore/.swiftpm/xcode/xcuserdata
