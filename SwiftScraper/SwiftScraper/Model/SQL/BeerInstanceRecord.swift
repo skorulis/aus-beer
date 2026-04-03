@@ -4,7 +4,7 @@ import Foundation
 import GRDB
 import SwiftScraperCore
 
-struct BeerInstanceRecord: Codable, Identifiable, Sendable {
+struct BeerInstanceRecord: Codable, Identifiable, Sendable, MutablePersistableRecord {
 
     var id: Int64 { rowId ?? -1 }
 
@@ -23,6 +23,10 @@ struct BeerInstanceRecord: Codable, Identifiable, Sendable {
         self.beer = beer
         self.size = size
         self.vessel = vessel
+    }
+    
+    mutating func didInsert(_ inserted: InsertionSuccess) {
+        rowId = inserted.rowID
     }
 }
 

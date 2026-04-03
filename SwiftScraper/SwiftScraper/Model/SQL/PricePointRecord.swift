@@ -3,7 +3,7 @@
 import Foundation
 import GRDB
 
-struct PricePointRecord: Codable, Identifiable, Sendable {
+struct PricePointRecord: Codable, Identifiable, Sendable, MutablePersistableRecord {
 
     var id: Int64 { rowId ?? -1 }
 
@@ -25,6 +25,10 @@ struct PricePointRecord: Codable, Identifiable, Sendable {
         self.price = price
         self.quantity = quantity
         self.date = date
+    }
+    
+    mutating func didInsert(_ inserted: InsertionSuccess) {
+        rowId = inserted.rowID
     }
 }
 

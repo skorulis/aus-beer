@@ -3,7 +3,7 @@
 import Foundation
 import GRDB
 
-struct BeerRecord: Codable, Identifiable, Sendable {
+struct BeerRecord: Codable, Identifiable, Sendable, MutablePersistableRecord {
 
     var id: Int64 { rowId ?? -1 }
 
@@ -22,6 +22,10 @@ struct BeerRecord: Codable, Identifiable, Sendable {
         self.brewery = brewery
         self.name = name
         self.untappdID = untappdID
+    }
+    
+    mutating func didInsert(_ inserted: InsertionSuccess) {
+        rowId = inserted.rowID
     }
 }
 
