@@ -26,4 +26,13 @@ extension ContentViewModel {
             toolbarStatus = "Error: \(error.localizedDescription)"
         }
     }
+
+    func clickShowMore() async {
+        do {
+            let clicked = try await webViewStore.clickDanMurphysLoadMoreIfPresent()
+            toolbarStatus = clicked ? "Tapped Show more." : "No Show more button on the page."
+        } catch {
+            toolbarStatus = "Error: \(error.localizedDescription)"
+        }
+    }
 }

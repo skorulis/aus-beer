@@ -35,6 +35,9 @@ struct ContentView: View {
             Button("Save HTML to tmp") {
                 Task { await viewModel.saveHTMLToTmp() }
             }
+            Button("Show more") {
+                Task { await viewModel.clickShowMore() }
+            }
             Spacer(minLength: 0)
         }
     }

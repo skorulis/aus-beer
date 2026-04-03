@@ -28,6 +28,32 @@ enum WebViewStoreError: Error, LocalizedError {
 final class WebViewStore: ObservableObject {
     weak var webView: WKWebView?
 
+    /// Same selector as `DANMURPHYS_LOAD_MORE_BUTTON_SELECTOR` in `scraper/src/sites/danmurphys.ts`.
+    private static let danMurphysLoadMoreButtonSelector = ".infinite-loader__load-more-button"
+
+    /// Clicks the category list “Show more” control if present. Returns whether a matching element was found and clicked.
+    func clickDanMurphysLoadMoreIfPresent() async throws -> Bool {
+        guard let webView else { throw WebViewStoreError.noWebView }
+        let script = """
+        (function() {
+          var el = document.querySelector('\(Self.danMurphysLoadMoreButtonSelector)');
+          if (!el) { return false; }
+          el.click();
+          return true;
+        })()
+        """
+        return try await withCheckedThrowingContinuation { continuation in
+            webView.evaluateJavaScript(script) { result, error in
+                if let error {
+                    continuation.resume(throwing: WebViewStoreError.javaScriptFailed(error))
+                    return
+                }
+                let clicked = (result as? Bool) ?? (result as? NSNumber)?.boolValue ?? false
+                continuation.resume(returning: clicked)
+            }
+        }
+    }
+
     /// Writes `document.documentElement.outerHTML` to a new file in the system temporary directory.
     func saveCurrentHTMLToTemporaryFile() async throws -> URL {
         let html = try await captureOuterHTML()
