@@ -1,5 +1,6 @@
 //  Created by Alexander Skorulis on 3/4/2026.
 
+import ASKCoordinator
 import SwiftUI
 import Knit
 import SwiftScraperCore
@@ -18,7 +19,8 @@ struct ContentView: View {
                     Label("Parsing", systemImage: "globe")
                 }
             
-            BeerListView(viewModel: resolver!.beerListViewModel())
+            CoordinatorView(coordinator: Coordinator(root: MainPath.beerList))
+                .withRenderers(resolver: resolver!)
                 .tabItem {
                     Label("Beers", systemImage: "list.bullet")
                 }

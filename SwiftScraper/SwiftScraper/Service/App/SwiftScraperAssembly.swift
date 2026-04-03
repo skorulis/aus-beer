@@ -14,6 +14,8 @@ final class SwiftScraperAssembly: AutoInitModuleAssembly {
     func assemble(container: Container<Resolver>) {
         registerViewModels(container: container)
         registerStores(container: container)
+        
+        container.register(MainPathRenderer.self) { MainPathRenderer(resolver: $0) }
     }
     
     @MainActor

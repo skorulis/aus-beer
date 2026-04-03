@@ -41,6 +41,7 @@ extension BeerListView: View {
                 }
             }
         }
+        .navigationTitle("Beers")
         .onAppear {
             viewModel.loadBeers()
         }
