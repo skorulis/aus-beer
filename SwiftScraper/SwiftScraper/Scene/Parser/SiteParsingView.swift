@@ -23,16 +23,6 @@ struct SiteParsingView: View {
                         .foregroundStyle(.secondary)
                         .textSelection(.enabled)
                 }
-                if !viewModel.parsedBeers.isEmpty {
-                    ScrollView {
-                        LazyVStack(alignment: .leading, spacing: 6) {
-                            ForEach(Array(viewModel.parsedBeers.enumerated()), id: \.offset) { _, beer in
-                                BeerCell(beer: beer)
-                            }
-                        }
-                    }
-                    .frame(maxHeight: 220)
-                }
             }
             .padding(10)
             .frame(maxWidth: .infinity)

@@ -12,9 +12,6 @@ import SwiftScraperCore
     
     var toolbarStatus: String?
     var autoLoadAllBeers = false
-
-    /// Beers from the last successful “Parse beers” run.
-    var parsedBeers: [ParsedBeer] = []
     
     @Resolvable<Resolver>
     init(webViewStore: WebViewStore, parsedBeerPersistence: ParsedBeerPersistenceService) {
@@ -64,7 +61,6 @@ extension SiteParsingViewModel {
         do {
             let html = try await webViewStore.currentOuterHTML()
             let beers = BeerSite.danMurphys.parser.parse(html: html)
-            parsedBeers = beers
             let noun = beers.count == 1 ? "beer" : "beers"
             let persistenceSummary: String
             do {
@@ -80,7 +76,6 @@ extension SiteParsingViewModel {
             }
             toolbarStatus = "Parsed \(beers.count) \(noun).\(persistenceSummary)"
         } catch {
-            parsedBeers = []
             toolbarStatus = "Error: \(error.localizedDescription)"
         }
     }
