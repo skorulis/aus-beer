@@ -9,6 +9,9 @@ import type { CanonicalProduct, PriceEntry, VesselType } from "../schema.js";
 /** Loads the Dan Murphy's /beer/all listing; optionally expands via "Show x more". */
 const BEER_LIST_URL = "https://www.danmurphys.com.au/beer/all";
 
+/** Same selector `loadMoreCatalogPages` uses for “Show x more” / infinite scroll. */
+export const DANMURPHYS_LOAD_MORE_BUTTON_SELECTOR = ".infinite-loader__load-more-button";
+
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 type Logger = {
@@ -667,10 +670,10 @@ async function loadMoreCatalogPages(page: Page, pagesToLoad: number, logger?: Lo
 
   const tileSelector = "#results shop-product-card, dd-product-carousel .product--dm";
   for (let clickIdx = 0; clickIdx < targetClicks; clickIdx++) {
-    const showMoreBtn = page.locator("button", { hasText: /Show\s+\d*\s+more/i }).first();
+    const showMoreBtn = page.locator(DANMURPHYS_LOAD_MORE_BUTTON_SELECTOR).first();
     const visible = (await showMoreBtn.isVisible().catch(() => false)) && (await showMoreBtn.count()) > 0;
     if (!visible) {
-      logger?.info(`show-more: no "Show x more" button found (stopping at ${clickIdx}/${targetClicks})`);
+      logger?.info(`show-more: no load-more button found (stopping at ${clickIdx}/${targetClicks})`);
       return;
     }
 
@@ -685,24 +688,19 @@ async function loadMoreCatalogPages(page: Page, pagesToLoad: number, logger?: Lo
 
     // Wait briefly for the button to "go away" (disabled/detached) so we don't double-click.
     await page
-      .waitForFunction(() => {
-        const btn = Array.from(document.querySelectorAll("button")).find((b) =>
-          /Show\s+\d*\s+more/i.test((b.textContent ?? "").trim()),
-        );
+      .waitForFunction((selector) => {
+        const btn = document.querySelector(selector) as HTMLButtonElement | null;
         if (!btn) return true;
-        const el = btn as HTMLButtonElement;
-        const disabled = el.disabled || el.getAttribute("aria-disabled") === "true";
+        const disabled = btn.disabled || btn.getAttribute("aria-disabled") === "true";
         return disabled;
-      }, { timeout: 20000 })
+      }, DANMURPHYS_LOAD_MORE_BUTTON_SELECTOR, { timeout: 20000 })
       .catch(() => undefined);
 
     // "Button return" condition: button is visible + enabled + result tiles have increased.
     await page
       .waitForFunction(
-        ({ beforeText, beforeTileCount }) => {
-          const btn = Array.from(document.querySelectorAll("button")).find((b) =>
-            /Show\s+\d*\s+more/i.test((b.textContent ?? "").trim()),
-          ) as HTMLButtonElement | undefined;
+        ({ selector, beforeText, beforeTileCount }) => {
+          const btn = document.querySelector(selector) as HTMLButtonElement | null;
           if (!btn) return false;
           const disabled = btn.disabled || btn.getAttribute("aria-disabled") === "true";
           if (disabled) return false;
@@ -714,7 +712,7 @@ async function loadMoreCatalogPages(page: Page, pagesToLoad: number, logger?: Lo
           if (beforeText) return txt !== beforeText;
           return true;
         },
-        { beforeText, beforeTileCount },
+        { selector: DANMURPHYS_LOAD_MORE_BUTTON_SELECTOR, beforeText, beforeTileCount },
         { timeout: 90000 },
       )
       .catch(() => undefined);

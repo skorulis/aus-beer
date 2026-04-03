@@ -1,11 +1,16 @@
 import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import assert from "node:assert/strict";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
+
+import { chromium } from "playwright";
 
 import type { CanonicalProduct } from "./schema.js";
-import { parseDanmurphysProductsFromFixture } from "./sites/danmurphys.js";
+import {
+  DANMURPHYS_LOAD_MORE_BUTTON_SELECTOR,
+  parseDanmurphysProductsFromFixture,
+} from "./sites/danmurphys.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const fixtureHtml = join(__dirname, "../fixtures/danmurphys-beer-all.html");
@@ -34,4 +39,21 @@ test("parseDanmurphysProductsFromFixture matches expected snapshot", async () =>
   const expected = JSON.parse(expectedRaw) as CanonicalProduct[];
   const actual = await parseDanmurphysProductsFromFixture(fixtureHtml);
   assert.deepEqual(sortForCompare(actual), sortForCompare(expected));
+});
+
+test("danmurphys fixture exposes the load-more button the scraper targets", async () => {
+  const fileUrl = pathToFileURL(resolve(fixtureHtml)).href;
+  const browser = await chromium.launch({ headless: true });
+  try {
+    const page = await browser.newPage();
+    await page.goto(fileUrl, { waitUntil: "domcontentloaded", timeout: 120000 });
+    const buttons = page.locator(DANMURPHYS_LOAD_MORE_BUTTON_SELECTOR);
+    assert.ok(
+      (await buttons.count()) >= 1,
+      `fixture should include at least one ${DANMURPHYS_LOAD_MORE_BUTTON_SELECTOR}`,
+    );
+    await buttons.first().waitFor({ state: "visible", timeout: 30000 });
+  } finally {
+    await browser.close();
+  }
 });
