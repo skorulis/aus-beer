@@ -10,6 +10,7 @@ import SwiftScraperCore
     let webViewStore: WebViewStore
     let site: BeerSite
     private let parsedBeerPersistence: ParsedBeerPersistenceService
+    private let htmlExportDirectory: HTMLExportDirectoryStore
     
     var toolbarStatus: String?
     var autoLoadAllBeers = false
@@ -18,18 +19,27 @@ import SwiftScraperCore
     init(
         @Argument site: BeerSite,
         webViewStore: WebViewStore,
-        parsedBeerPersistence: ParsedBeerPersistenceService
+        parsedBeerPersistence: ParsedBeerPersistenceService,
+        htmlExportDirectory: HTMLExportDirectoryStore,
     ) {
         self.site = site
         self.webViewStore = webViewStore
         self.parsedBeerPersistence = parsedBeerPersistence
+        self.htmlExportDirectory = htmlExportDirectory
     }
 }
 
 extension SiteParsingViewModel {
     func saveHTMLToTmp() async {
         do {
-            let url = try await webViewStore.saveCurrentHTMLToTemporaryFile()
+            let html = try await webViewStore.captureOuterHTML()
+            let name = "\(site.rawValue)-\(Int(Date().timeIntervalSince1970)).html"
+            let url = try htmlExportDirectory.performWithAccess { exportDir in
+                try FileManager.default.createDirectory(at: exportDir, withIntermediateDirectories: true)
+                let fileURL = exportDir.appendingPathComponent(name)
+                try html.write(to: fileURL, atomically: true, encoding: .utf8)
+                return fileURL
+            }
             toolbarStatus = url.path
         } catch {
             toolbarStatus = "Error: \(error.localizedDescription)"

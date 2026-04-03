@@ -71,23 +71,7 @@ final class WebViewStore: ObservableObject {
         try await captureOuterHTML()
     }
 
-    /// Writes `document.documentElement.outerHTML` to a new file in the folder chosen in Settings (security-scoped bookmark).
-    func saveCurrentHTMLToTemporaryFile() async throws -> URL {
-        let html = try await captureOuterHTML()
-        let name = "danmurphys-\(Int(Date().timeIntervalSince1970)).html"
-        do {
-            return try htmlExportDirectory.performWithAccess { exportDir in
-                try FileManager.default.createDirectory(at: exportDir, withIntermediateDirectories: true)
-                let fileURL = exportDir.appendingPathComponent(name)
-                try html.write(to: fileURL, atomically: true, encoding: .utf8)
-                return fileURL
-            }
-        } catch let error as HTMLExportDirectoryError {
-            throw WebViewStoreError.exportFolderAccess(error)
-        }
-    }
-
-    private func captureOuterHTML() async throws -> String {
+    func captureOuterHTML() async throws -> String {
         guard let webView else { throw WebViewStoreError.noWebView }
         return try await withCheckedThrowingContinuation { continuation in
             webView.evaluateJavaScript("document.documentElement.outerHTML") { result, error in
