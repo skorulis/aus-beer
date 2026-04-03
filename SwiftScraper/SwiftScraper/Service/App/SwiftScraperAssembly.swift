@@ -29,6 +29,9 @@ final class SwiftScraperAssembly: AutoInitModuleAssembly {
             .inObjectScope(.container)
         container.register(WebViewStore.self) { WebViewStore.make(resolver: $0) }
             .inObjectScope(.container)
+
+        container.register(ParsedBeerPersistenceService.self) { ParsedBeerPersistenceService.make(resolver: $0) }
+            .inObjectScope(.container)
         
         container.register(SQLStore.self) { _ in
             SQLStore.default()

@@ -23,6 +23,7 @@ final class SQLStore {
         } else {
             self.dbQueue = try! DatabaseQueue(path: Self.dbPath)
         }
+        try! Self.migrator.migrate(self.dbQueue)
     }
     
     static func `default`() -> SQLStore {

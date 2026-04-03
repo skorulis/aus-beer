@@ -8,6 +8,7 @@ import SwiftScraperCore
 @MainActor @Observable final class SiteParsingViewModel {
     
     let webViewStore: WebViewStore
+    private let parsedBeerPersistence: ParsedBeerPersistenceService
     
     var toolbarStatus: String?
 
@@ -15,8 +16,9 @@ import SwiftScraperCore
     var parsedBeers: [ParsedBeer] = []
     
     @Resolvable<Resolver>
-    init(webViewStore: WebViewStore) {
+    init(webViewStore: WebViewStore, parsedBeerPersistence: ParsedBeerPersistenceService) {
         self.webViewStore = webViewStore
+        self.parsedBeerPersistence = parsedBeerPersistence
     }
 }
 
@@ -45,7 +47,19 @@ extension SiteParsingViewModel {
             let beers = BeerSite.danMurphys.parser.parse(html: html)
             parsedBeers = beers
             let noun = beers.count == 1 ? "beer" : "beers"
-            toolbarStatus = "Parsed \(beers.count) \(noun)."
+            let persistenceSummary: String
+            do {
+                let r = try parsedBeerPersistence.persistParsedBeers(beers)
+                if r.newBeersInserted == 0 && r.breweriesInserted == 0 {
+                    persistenceSummary = " DB: no new beers (\(r.existingBeersSkipped) already saved)."
+                } else {
+                    persistenceSummary =
+                        " DB: +\(r.newBeersInserted) new beer(s), +\(r.breweriesInserted) new brewery/breweries, skipped \(r.existingBeersSkipped) existing."
+                }
+            } catch {
+                persistenceSummary = " DB save failed: \(error.localizedDescription)"
+            }
+            toolbarStatus = "Parsed \(beers.count) \(noun).\(persistenceSummary)"
         } catch {
             parsedBeers = []
             toolbarStatus = "Error: \(error.localizedDescription)"
