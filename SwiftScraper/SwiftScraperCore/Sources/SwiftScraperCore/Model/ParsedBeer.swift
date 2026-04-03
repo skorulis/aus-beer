@@ -2,7 +2,7 @@
 
 import Foundation
 
-public struct BeerRecord: Codable, Equatable, Sendable {
+public struct ParsedBeer: Codable, Equatable, Sendable {
     public let brewery: String?
     public let name: String
     public let vesselType: VesselType?

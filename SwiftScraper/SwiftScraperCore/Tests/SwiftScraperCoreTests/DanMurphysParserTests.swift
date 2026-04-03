@@ -12,7 +12,7 @@ private let fixturesDirectory = URL(fileURLWithPath: #filePath)
     .appendingPathComponent("fixtures", isDirectory: true)
 
 /// Mirrors `compareKey` / `sortForCompare` in `scraper/src/danmurphys.fixture.test.ts`.
-private func compareKey(_ p: BeerRecord) -> String {
+private func compareKey(_ p: ParsedBeer) -> String {
     let priceKeys = p.prices
         .map { price in
             let member = price.memberOffer.map { String($0) } ?? "nil"
@@ -30,7 +30,7 @@ private func compareKey(_ p: BeerRecord) -> String {
     .joined(separator: "\0")
 }
 
-private func sortForCompare(_ products: [BeerRecord]) -> [BeerRecord] {
+private func sortForCompare(_ products: [ParsedBeer]) -> [ParsedBeer] {
     products.sorted { compareKey($0).localizedStandardCompare(compareKey($1)) == .orderedAscending }
 }
 
@@ -43,7 +43,7 @@ struct DanMurphysParserTests {
         let html = try String(contentsOf: htmlURL, encoding: .utf8)
         let expectedData = try Data(contentsOf: expectedURL)
         let decoder = JSONDecoder()
-        let expected = try decoder.decode([BeerRecord].self, from: expectedData)
+        let expected = try decoder.decode([ParsedBeer].self, from: expectedData)
 
         let parser = DanMurphysParser()
         let actual = parser.parse(html: html)

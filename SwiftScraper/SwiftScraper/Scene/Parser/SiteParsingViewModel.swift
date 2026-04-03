@@ -12,7 +12,7 @@ import SwiftScraperCore
     var toolbarStatus: String?
 
     /// Beers from the last successful “Parse beers” run.
-    var parsedBeers: [BeerRecord] = []
+    var parsedBeers: [ParsedBeer] = []
     
     @Resolvable<Resolver>
     init(webViewStore: WebViewStore) {

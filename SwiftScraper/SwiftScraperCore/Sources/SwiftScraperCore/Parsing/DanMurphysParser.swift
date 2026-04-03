@@ -10,7 +10,7 @@ public final class DanMurphysParser: SiteParser, @unchecked Sendable {
 
     public init() {}
 
-    public func parse(html: String) -> [BeerRecord] {
+    public func parse(html: String) -> [ParsedBeer] {
         guard let doc = try? SwiftSoup.parse(html) else { return [] }
 
         var rows: [DomProductRow] = []
@@ -44,7 +44,7 @@ public final class DanMurphysParser: SiteParser, @unchecked Sendable {
         }
 
         var seenCanonical = Set<String>()
-        var out: [BeerRecord] = []
+        var out: [ParsedBeer] = []
 
         for row in rows {
             guard row.href.contains("/product/") else { continue }
@@ -67,7 +67,7 @@ public final class DanMurphysParser: SiteParser, @unchecked Sendable {
             let size = extractSizeMl(textForMeta) ?? 0
 
             out.append(
-                BeerRecord(
+                ParsedBeer(
                     brewery: parsed.brewery,
                     name: parsed.name,
                     vesselType: vessel,

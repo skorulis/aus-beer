@@ -7,7 +7,7 @@ import SwiftScraperCore
 // MARK: - Memory footprint
 
 @MainActor struct BeerCell {
-    let beer: BeerRecord
+    let beer: ParsedBeer
 }
 
 // MARK: - Rendering

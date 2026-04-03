@@ -3,5 +3,5 @@
 import Foundation
 
 public protocol SiteParser: Sendable {
-    func parse(html: String) -> [BeerRecord]
+    func parse(html: String) -> [ParsedBeer]
 }
