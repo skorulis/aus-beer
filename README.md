@@ -63,3 +63,16 @@ HEADFUL=1 npm run scrape -- ../result.json
 ## Scope
 
 By default, the Dan Murphy’s adapter scrapes the **first page** of [`/beer/all`](https://www.danmurphys.com.au/beer/all). You can load additional pages (clicks the “Show x more” button) by passing `pagesToLoad` to `scrapeDanmurphysFirstPage(...)` / `parseDanmurphysProductsFromFixture(...)`.
+
+## Swift app (`SwiftScraper/`)
+
+Native macOS client and parsers live under [`SwiftScraper/`](SwiftScraper/). You need **Xcode** (matching the project’s deployment target) on macOS.
+
+### Run unit tests from the command line
+
+From the repository root:
+
+```bash
+cd SwiftScraper
+xcodebuild -scheme SwiftScraper -destination 'platform=macOS' test
+```

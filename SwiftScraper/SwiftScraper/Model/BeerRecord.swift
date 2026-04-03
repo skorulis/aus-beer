@@ -2,7 +2,7 @@
 
 import Foundation
 
-struct BeerRecord: Codable {
+struct BeerRecord: Codable, Equatable {
     let brewery: String?
     let name: String
     let vesselType: VesselType?
@@ -10,7 +10,7 @@ struct BeerRecord: Codable {
     let prices: [BeerPrice]
 }
 
-struct BeerPrice: Codable {
+struct BeerPrice: Codable, Equatable {
     let price: Double
     let quantity: Int
     let memberOffer: Bool?
