@@ -7,11 +7,14 @@ public enum BeerSite: String, Codable, Sendable, CaseIterable, Identifiable {
     public var id: String { rawValue }
     
     case danMurphys
+    case bwsCraftBeer
 
     public var rootPage: String {
         switch self {
         case .danMurphys:
             "https://www.danmurphys.com.au/beer/all"
+        case .bwsCraftBeer:
+            "https://bws.com.au/beer/craft-beer"
         }
     }
 
@@ -23,6 +26,8 @@ public enum BeerSite: String, Codable, Sendable, CaseIterable, Identifiable {
         switch self {
         case .danMurphys:
             return DanMurphysParser()
+        case .bwsCraftBeer:
+            return DanMurphysParser()
         }
     }
 
@@ -31,6 +36,8 @@ public enum BeerSite: String, Codable, Sendable, CaseIterable, Identifiable {
         switch self {
         case .danMurphys:
             "Dan Murphy's"
+        case .bwsCraftBeer:
+            "BWS"
         }
     }
 }
