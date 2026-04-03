@@ -14,7 +14,7 @@ struct ContentView: View {
 
     var body: some View {
         TabView {
-            SiteParsingView(viewModel: resolver!.siteParsingViewModel())
+            SiteParsingView(viewModel: resolver!.siteParsingViewModel(site: .danMurphys))
                 .tabItem {
                     Label("Parsing", systemImage: "globe")
                 }

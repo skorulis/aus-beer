@@ -2,8 +2,10 @@
 
 import Foundation
 
-public enum BeerSite: String, Codable, Sendable {
+public enum BeerSite: String, Codable, Sendable, CaseIterable, Identifiable {
 
+    public var id: String { rawValue }
+    
     case danMurphys
 
     public var rootPage: String {

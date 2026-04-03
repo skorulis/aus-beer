@@ -51,6 +51,22 @@ extension SettingsView: View {
 
             Section {
                 Text(
+                    "Untappd"
+                )
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+                TextField("Client ID", text: $viewModel.untappdClientID)
+                    .textContentType(.username)
+
+                SecureField("Secret", text: $viewModel.untappdSecretID)
+            } header: {
+                Text("Untappd")
+            }
+
+            Section {
+                Text(
                     "Removes every brewery, beer, price point, and supplier from the local database on this Mac. HTML export settings and files are not affected."
                 )
                 .font(.callout)

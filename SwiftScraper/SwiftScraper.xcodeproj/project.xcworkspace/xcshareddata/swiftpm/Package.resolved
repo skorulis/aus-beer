@@ -1,5 +1,5 @@
 {
-  "originHash" : "37744c26ba6035a80f966f7ffe34377b9be75ba6c025144e79bdf2d8a6fe269e",
+  "originHash" : "7923660748d39582a529d1c9b7b56deab7f997d9bc428dba8caf4b667ded3cf1",
   "pins" : [
     {
       "identity" : "askcoordinator",
@@ -53,6 +53,15 @@
       "state" : {
         "revision" : "6c7915e16f729857aec3e99068c361e58a00ed68",
         "version" : "2.13.4"
+      }
+    },
+    {
+      "identity" : "untappd-api-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/skorulis/untappd-api-swift",
+      "state" : {
+        "branch" : "main",
+        "revision" : "d271a484dc0a70b03344dfd09081e9923857dc3c"
       }
     }
   ],

@@ -8,13 +8,19 @@ import SwiftScraperCore
 @MainActor @Observable final class SiteParsingViewModel {
     
     let webViewStore: WebViewStore
+    let site: BeerSite
     private let parsedBeerPersistence: ParsedBeerPersistenceService
     
     var toolbarStatus: String?
     var autoLoadAllBeers = false
     
     @Resolvable<Resolver>
-    init(webViewStore: WebViewStore, parsedBeerPersistence: ParsedBeerPersistenceService) {
+    init(
+        @Argument site: BeerSite,
+        webViewStore: WebViewStore,
+        parsedBeerPersistence: ParsedBeerPersistenceService
+    ) {
+        self.site = site
         self.webViewStore = webViewStore
         self.parsedBeerPersistence = parsedBeerPersistence
     }

@@ -4,15 +4,13 @@ import SwiftUI
 import Knit
 import SwiftScraperCore
 
-private let danMurphysBeerListURL = BeerSite.danMurphys.rootURL
-
 struct SiteParsingView: View {
     
     @State var viewModel: SiteParsingViewModel
 
     var body: some View {
         VStack(spacing: 0) {
-            WebView(url: danMurphysBeerListURL, store: viewModel.webViewStore)
+            WebView(url: viewModel.site.rootURL, store: viewModel.webViewStore)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             VStack(alignment: .leading, spacing: 6) {
@@ -62,5 +60,5 @@ struct SiteParsingView: View {
 
 #Preview {
     let assembler = SwiftScraperAssembly.testing()
-    SiteParsingView(viewModel: assembler.resolver.siteParsingViewModel())
+    SiteParsingView(viewModel: assembler.resolver.siteParsingViewModel(site: .danMurphys))
 }
