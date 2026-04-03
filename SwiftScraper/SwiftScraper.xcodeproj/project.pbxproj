@@ -11,6 +11,7 @@
 		FA4D2D4D2F7F5C7600EE44C6 /* KnitMacros in Frameworks */ = {isa = PBXBuildFile; productRef = FA4D2D4C2F7F5C7600EE44C6 /* KnitMacros */; };
 		FA4D2FA22F7F61A000EE44C6 /* knitconfig.json in Resources */ = {isa = PBXBuildFile; fileRef = FA4D2FA12F7F61A000EE44C6 /* knitconfig.json */; };
 		FA4D2FA82F7F620000EE44C6 /* SwiftScraperCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA4D2FA72F7F620000EE44C6 /* SwiftScraperCore */; };
+		FA4D314B2F7F84DD00EE44C6 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = FA4D314A2F7F84DD00EE44C6 /* GRDB */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 				FA4D2D4B2F7F5C7600EE44C6 /* Knit in Frameworks */,
 				FA4D2D4D2F7F5C7600EE44C6 /* KnitMacros in Frameworks */,
 				FA4D2FA82F7F620000EE44C6 /* SwiftScraperCore in Frameworks */,
+				FA4D314B2F7F84DD00EE44C6 /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +108,7 @@
 				FA4D2FA72F7F620000EE44C6 /* SwiftScraperCore */,
 				FA4D2D4A2F7F5C7600EE44C6 /* Knit */,
 				FA4D2D4C2F7F5C7600EE44C6 /* KnitMacros */,
+				FA4D314A2F7F84DD00EE44C6 /* GRDB */,
 			);
 			productName = SwiftScraper;
 			productReference = FA4D2CF32F7F52A900EE44C6 /* SwiftScraper.app */;
@@ -165,6 +168,7 @@
 			packageReferences = (
 				FA4D2D492F7F5C7600EE44C6 /* XCRemoteSwiftPackageReference "knit" */,
 				FA4D2FA62F7F620000EE44C6 /* XCLocalSwiftPackageReference "SwiftScraperCore" */,
+				FA4D31492F7F84DD00EE44C6 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA4D2CF42F7F52A900EE44C6 /* Products */;
@@ -499,6 +503,14 @@
 				kind = branch;
 			};
 		};
+		FA4D31492F7F84DD00EE44C6 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -521,6 +533,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA4D2FA62F7F620000EE44C6 /* XCLocalSwiftPackageReference "SwiftScraperCore" */;
 			productName = SwiftScraperCore;
+		};
+		FA4D314A2F7F84DD00EE44C6 /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA4D31492F7F84DD00EE44C6 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

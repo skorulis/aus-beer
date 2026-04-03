@@ -59,13 +59,25 @@ final class WebViewStore: ObservableObject {
         try await captureOuterHTML()
     }
 
-    /// Writes `document.documentElement.outerHTML` to a new file in the system temporary directory.
+    /// Writes `document.documentElement.outerHTML` to a new file under the repository `tmp` directory.
     func saveCurrentHTMLToTemporaryFile() async throws -> URL {
         let html = try await captureOuterHTML()
         let name = "danmurphys-\(Int(Date().timeIntervalSince1970)).html"
-        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(name)
+        let tmpDir = Self.projectRepositoryTmpDirectoryURL
+        try FileManager.default.createDirectory(at: tmpDir, withIntermediateDirectories: true)
+        let fileURL = tmpDir.appendingPathComponent(name)
         try html.write(to: fileURL, atomically: true, encoding: .utf8)
         return fileURL
+    }
+
+    /// `aus-beer/tmp` when this file lives at `SwiftScraper/SwiftScraper/Service/WebViewStore.swift`.
+    private static var projectRepositoryTmpDirectoryURL: URL {
+        URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent() // Service
+            .deletingLastPathComponent() // SwiftScraper (app target)
+            .deletingLastPathComponent() // SwiftScraper (Xcode project folder)
+            .deletingLastPathComponent() // repository root
+            .appendingPathComponent("tmp", isDirectory: true)
     }
 
     private func captureOuterHTML() async throws -> String {
