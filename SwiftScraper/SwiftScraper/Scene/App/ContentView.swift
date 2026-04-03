@@ -19,8 +19,7 @@ struct ContentView: View {
                     Label("Parsing", systemImage: "globe")
                 }
             
-            CoordinatorView(coordinator: Coordinator(root: MainPath.beerList))
-                .withRenderers(resolver: resolver!)
+            BeerListView(viewModel: resolver!.beerListViewModel())
                 .tabItem {
                     Label("Beers", systemImage: "list.bullet")
                 }

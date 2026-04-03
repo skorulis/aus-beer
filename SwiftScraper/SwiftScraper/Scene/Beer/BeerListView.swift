@@ -17,6 +17,7 @@ import SwiftUI
 extension BeerListView: View {
 
     var body: some View {
+        @Bindable var viewModel = viewModel
         VStack(alignment: .leading, spacing: 0) {
             if let message = viewModel.lastErrorMessage {
                 Text(message)
@@ -25,7 +26,7 @@ extension BeerListView: View {
                     .padding([.horizontal, .top])
             }
 
-            List(viewModel.beerInstances) { row in
+            List(viewModel.beerInstances, selection: $viewModel.selectedBeerInstanceID) { row in
                 HStack(alignment: .firstTextBaseline) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(row.beer.name)

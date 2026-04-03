@@ -10,6 +10,7 @@ import KnitMacros
     private let sqlStore: SQLStore
 
     var beerInstances: [BeerInstanceListRow] = []
+    var selectedBeerInstanceID: Int64?
     var lastErrorMessage: String?
 
     @Resolvable<Resolver>
