@@ -33,14 +33,22 @@ extension SiteParsingViewModel {
     func saveHTMLToTmp() async {
         do {
             let html = try await webViewStore.captureOuterHTML()
-            let name = "\(site.rawValue)-\(Int(Date().timeIntervalSince1970)).html"
-            let url = try htmlExportDirectory.performWithAccess { exportDir in
+            let beers = site.parser.parse(html: html)
+            let timestamp = Int(Date().timeIntervalSince1970)
+            let baseName = "\(site.rawValue)-\(timestamp)"
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            let jsonData = try encoder.encode(beers)
+            let saved = try htmlExportDirectory.performWithAccess { exportDir in
                 try FileManager.default.createDirectory(at: exportDir, withIntermediateDirectories: true)
-                let fileURL = exportDir.appendingPathComponent(name)
-                try html.write(to: fileURL, atomically: true, encoding: .utf8)
-                return fileURL
+                let htmlURL = exportDir.appendingPathComponent("\(baseName).html")
+                try html.write(to: htmlURL, atomically: true, encoding: .utf8)
+                let jsonURL = exportDir.appendingPathComponent("\(baseName).json")
+                try jsonData.write(to: jsonURL, options: .atomic)
+                return (htmlURL: htmlURL, jsonURL: jsonURL, beerCount: beers.count)
             }
-            toolbarStatus = url.path
+            let noun = saved.beerCount == 1 ? "beer" : "beers"
+            toolbarStatus = "\(saved.htmlURL.path) · \(saved.jsonURL.path) (\(saved.beerCount) \(noun))"
         } catch {
             toolbarStatus = "Error: \(error.localizedDescription)"
         }
