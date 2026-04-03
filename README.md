@@ -20,22 +20,16 @@ npm install
 
 ## Run the scraper
 
-Still inside `scraper/`, pass the path to the JSON file you want to write:
+Still inside `scraper/`, pass the output **filename** (the file is written under `tmp/` at the repository root):
 
 ```bash
-npm run scrape -- path/to/output.json
+npm run scrape -- result.json
 ```
 
 Or use the explicit flag:
 
 ```bash
-npm run scrape -- --out path/to/output.json
-```
-
-Example writing to the repo root:
-
-```bash
-npm run scrape -- ../result.json
+npm run scrape -- --out result.json
 ```
 
 ### Load more pages
@@ -43,13 +37,13 @@ npm run scrape -- ../result.json
 Dan Murphy’s uses a `“Show x more”` button to load more products. You can control how many pages get loaded before parsing:
 
 ```bash
-npm run scrape -- --max-pages 3 ../result.json
+npm run scrape -- --max-pages 3 result.json
 ```
 
 This also works with `--html` fixture snapshots:
 
 ```bash
-npm run scrape -- --html --max-pages 3 ../scraper/fixtures/danmurphys-beer-all.html
+npm run scrape -- --html --max-pages 3 danmurphys-beer-all.html
 ```
 
 ### Debug (visible browser)
@@ -57,7 +51,7 @@ npm run scrape -- --html --max-pages 3 ../scraper/fixtures/danmurphys-beer-all.h
 If you need to see the page (modals, layout issues):
 
 ```bash
-HEADFUL=1 npm run scrape -- ../result.json
+HEADFUL=1 npm run scrape -- result.json
 ```
 
 ## Scope

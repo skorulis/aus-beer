@@ -1,4 +1,5 @@
 node_modules/
+tmp/
 dist/
 *.log
 SwiftScraper/SwiftScraper.xcodeproj/project.xcworkspace/xcuserdata
