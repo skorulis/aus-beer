@@ -127,6 +127,11 @@ private func cleanBeerName(_ raw: String) -> String {
     var s = raw.replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression)
         .trimmingCharacters(in: .whitespacesAndNewlines)
     let patterns: [(String, String)] = [
+        // e.g. "New 30 Block Cans 375mL", "30 Block and Bottles 12x355mL"
+        (#"\s+\d+\s+Block(?:\s+and\s+Bottles)?(?:\s+\d+\s*x\s*\d+\s*m[lL]?)?"#, ""),
+        // e.g. "Extra Bottles 12x355mL"
+        (#"\s+(bottles?|cans?|stubbies?)\s*\d+\s*x\s*\d+\s*m[lL]?\b"#, ""),
+        (#"\s+\d+\s*x\s*\d+\s*m[lL]?\b"#, ""),
         (#",?\s*(bottles?|cans?|stubbies?)\s*,?\s*\d+\s*m[lL]?\b"#, ""),
         (#"\s+\d+\s*m[lL]\b"#, ""),
         (#",?\s*(bottles?|cans?|stubbies?)\s*$"#, ""),

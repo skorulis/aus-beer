@@ -199,7 +199,7 @@
   },
   {
     "brewery": "Tooheys",
-    "name": "New 30 Block",
+    "name": "New",
     "vesselType": "can",
     "sizeMl": 375,
     "prices": [
@@ -230,7 +230,7 @@
   },
   {
     "brewery": "Corona",
-    "name": "Extra Bottles 12x355mL",
+    "name": "Extra",
     "vesselType": "bottle",
     "sizeMl": 355,
     "prices": [
@@ -536,7 +536,7 @@
   },
   {
     "brewery": "Hahn",
-    "name": "Super Dry 3.5% 30 Block",
+    "name": "Super Dry 3.5%",
     "vesselType": "can",
     "sizeMl": 375,
     "prices": [
