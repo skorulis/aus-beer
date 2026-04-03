@@ -3,9 +3,6 @@
 import ASKCoordinator
 import SwiftUI
 import Knit
-import SwiftScraperCore
-
-private let danMurphysBeerListURL = BeerSite.danMurphys.rootURL
 
 struct ContentView: View {
     
@@ -14,7 +11,7 @@ struct ContentView: View {
 
     var body: some View {
         TabView {
-            SiteParsingView(viewModel: resolver!.siteParsingViewModel(site: .danMurphys))
+            ProjectListView()
                 .tabItem {
                     Label("Parsing", systemImage: "globe")
                 }
