@@ -11,6 +11,7 @@ import SwiftScraperCore
     private let parsedBeerPersistence: ParsedBeerPersistenceService
     
     var toolbarStatus: String?
+    var autoLoadAllBeers = false
 
     /// Beers from the last successful “Parse beers” run.
     var parsedBeers: [ParsedBeer] = []
@@ -38,6 +39,24 @@ extension SiteParsingViewModel {
             toolbarStatus = clicked ? "Tapped Show more." : "No Show more button on the page."
         } catch {
             toolbarStatus = "Error: \(error.localizedDescription)"
+        }
+    }
+
+    func loadAllBeers() async {
+        autoLoadAllBeers = true
+        while autoLoadAllBeers {
+            do {
+                let clicked = try await webViewStore.clickDanMurphysLoadMoreIfPresent()
+                if !clicked {
+                    toolbarStatus = "No Show more button on the page."
+                    break
+                }
+                toolbarStatus = "Tapped Show more. Waiting 5s before next load..."
+            } catch {
+                toolbarStatus = "Error: \(error.localizedDescription)"
+                break
+            }
+            try? await Task.sleep(for: .seconds(5))
         }
     }
 

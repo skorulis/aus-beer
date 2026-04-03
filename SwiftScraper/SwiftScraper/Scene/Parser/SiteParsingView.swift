@@ -51,6 +51,19 @@ struct SiteParsingView: View {
             Button("Parse beers") {
                 Task { await viewModel.parseBeersFromCurrentPage() }
             }
+            Toggle(
+                "Load all beers",
+                isOn: Binding(
+                    get: { viewModel.autoLoadAllBeers },
+                    set: { newValue in
+                        viewModel.autoLoadAllBeers = newValue
+                        if newValue {
+                            Task { await viewModel.loadAllBeers() }
+                        }
+                    }
+                )
+            )
+            .toggleStyle(.switch)
             Spacer(minLength: 0)
         }
     }
