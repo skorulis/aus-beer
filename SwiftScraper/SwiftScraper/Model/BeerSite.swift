@@ -2,7 +2,7 @@
 
 import Foundation
 
-enum BeerSite {
+enum BeerSite: String, Codable {
     
     case danMurphys
     
@@ -15,5 +15,12 @@ enum BeerSite {
     
     var rootURL: URL {
         URL(string: rootPage)!
+    }
+    
+    var parser: SiteParser {
+        switch self {
+        case .danMurphys:
+            return DanMurphysParser()
+        }
     }
 }
