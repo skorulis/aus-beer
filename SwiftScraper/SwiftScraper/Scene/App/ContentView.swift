@@ -18,7 +18,7 @@ struct ContentView: View {
                     Label("Parsing", systemImage: "globe")
                 }
             
-            SettingsView()
+            SettingsView(viewModel: resolver!.settingsViewModel())
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }

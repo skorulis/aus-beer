@@ -20,11 +20,14 @@ final class SwiftScraperAssembly: AutoInitModuleAssembly {
     private func registerViewModels(container: Container<TargetResolver>) {
         container.register(ContentViewModel.self) { ContentViewModel.make(resolver: $0) }
         container.register(SiteParsingViewModel.self) { SiteParsingViewModel.make(resolver: $0) }
+        container.register(SettingsViewModel.self) { SettingsViewModel.make(resolver: $0) }
     }
     
     @MainActor
     private func registerStores(container: Container<TargetResolver>) {
-        container.register(WebViewStore.self) { _ in WebViewStore() }
+        container.register(HTMLExportDirectoryStore.self) { _ in HTMLExportDirectoryStore() }
+            .inObjectScope(.container)
+        container.register(WebViewStore.self) { WebViewStore.make(resolver: $0) }
             .inObjectScope(.container)
     }
     

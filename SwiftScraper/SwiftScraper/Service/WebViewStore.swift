@@ -2,12 +2,15 @@
 
 import Combine
 import Foundation
+import Knit
+import KnitMacros
 import WebKit
 
 enum WebViewStoreError: Error, LocalizedError {
     case noWebView
     case javaScriptFailed(Error?)
     case invalidResult
+    case exportFolderAccess(Error)
 
     var errorDescription: String? {
         switch self {
@@ -21,12 +24,21 @@ enum WebViewStoreError: Error, LocalizedError {
             }
         case .invalidResult:
             "Could not read HTML from the page."
+        case .exportFolderAccess(let underlying):
+            underlying.localizedDescription
         }
     }
 }
 
 final class WebViewStore: ObservableObject {
     weak var webView: WKWebView?
+
+    private let htmlExportDirectory: HTMLExportDirectoryStore
+
+    @Resolvable<Resolver>
+    init(htmlExportDirectory: HTMLExportDirectoryStore) {
+        self.htmlExportDirectory = htmlExportDirectory
+    }
 
     /// Same selector as `DANMURPHYS_LOAD_MORE_BUTTON_SELECTOR` in `scraper/src/sites/danmurphys.ts`.
     private static let danMurphysLoadMoreButtonSelector = ".infinite-loader__load-more-button"
@@ -59,25 +71,20 @@ final class WebViewStore: ObservableObject {
         try await captureOuterHTML()
     }
 
-    /// Writes `document.documentElement.outerHTML` to a new file under the repository `tmp` directory.
+    /// Writes `document.documentElement.outerHTML` to a new file in the folder chosen in Settings (security-scoped bookmark).
     func saveCurrentHTMLToTemporaryFile() async throws -> URL {
         let html = try await captureOuterHTML()
         let name = "danmurphys-\(Int(Date().timeIntervalSince1970)).html"
-        let tmpDir = Self.projectRepositoryTmpDirectoryURL
-        try FileManager.default.createDirectory(at: tmpDir, withIntermediateDirectories: true)
-        let fileURL = tmpDir.appendingPathComponent(name)
-        try html.write(to: fileURL, atomically: true, encoding: .utf8)
-        return fileURL
-    }
-
-    /// `aus-beer/tmp` when this file lives at `SwiftScraper/SwiftScraper/Service/WebViewStore.swift`.
-    private static var projectRepositoryTmpDirectoryURL: URL {
-        URL(fileURLWithPath: #filePath)
-            .deletingLastPathComponent() // Service
-            .deletingLastPathComponent() // SwiftScraper (app target)
-            .deletingLastPathComponent() // SwiftScraper (Xcode project folder)
-            .deletingLastPathComponent() // repository root
-            .appendingPathComponent("tmp", isDirectory: true)
+        do {
+            return try htmlExportDirectory.performWithAccess { exportDir in
+                try FileManager.default.createDirectory(at: exportDir, withIntermediateDirectories: true)
+                let fileURL = exportDir.appendingPathComponent(name)
+                try html.write(to: fileURL, atomically: true, encoding: .utf8)
+                return fileURL
+            }
+        } catch let error as HTMLExportDirectoryError {
+            throw WebViewStoreError.exportFolderAccess(error)
+        }
     }
 
     private func captureOuterHTML() async throws -> String {
