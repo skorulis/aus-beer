@@ -5,6 +5,7 @@ import WebKit
 
 struct WebView: NSViewRepresentable {
     let url: URL
+    let store: WebViewStore
 
     func makeCoordinator() -> Coordinator {
         Coordinator()
@@ -12,6 +13,7 @@ struct WebView: NSViewRepresentable {
 
     func makeNSView(context: Context) -> WKWebView {
         let webView = WKWebView()
+        store.webView = webView
         context.coordinator.lastLoadedURL = url
         webView.load(URLRequest(url: url))
         return webView

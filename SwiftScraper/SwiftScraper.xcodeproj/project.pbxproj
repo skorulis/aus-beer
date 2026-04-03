@@ -8,16 +8,36 @@
 
 /* Begin PBXBuildFile section */
 		FA4D2D092F7F534900EE44C6 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = FA4D2D082F7F534900EE44C6 /* SwiftSoup */; };
+		FA4D2D4B2F7F5C7600EE44C6 /* Knit in Frameworks */ = {isa = PBXBuildFile; productRef = FA4D2D4A2F7F5C7600EE44C6 /* Knit */; };
+		FA4D2D4D2F7F5C7600EE44C6 /* KnitMacros in Frameworks */ = {isa = PBXBuildFile; productRef = FA4D2D4C2F7F5C7600EE44C6 /* KnitMacros */; };
+		FA4D2FA22F7F61A000EE44C6 /* knitconfig.json in Resources */ = {isa = PBXBuildFile; fileRef = FA4D2FA12F7F61A000EE44C6 /* knitconfig.json */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		FA4D2D332F7F598800EE44C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA4D2CEB2F7F52A900EE44C6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FA4D2CF22F7F52A900EE44C6;
+			remoteInfo = SwiftScraper;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		FA4D2CF32F7F52A900EE44C6 /* SwiftScaper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftScaper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA4D2CF32F7F52A900EE44C6 /* SwiftScraper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftScraper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA4D2D2F2F7F598800EE44C6 /* SwiftScraperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftScraperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA4D2FA12F7F61A000EE44C6 /* knitconfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = knitconfig.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		FA4D2CF52F7F52A900EE44C6 /* SwiftScaper */ = {
+		FA4D2CF52F7F52A900EE44C6 /* SwiftScraper */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SwiftScaper;
+			path = SwiftScraper;
+			sourceTree = "<group>";
+		};
+		FA4D2D302F7F598800EE44C6 /* SwiftScraperTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SwiftScraperTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -27,7 +47,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA4D2D4B2F7F5C7600EE44C6 /* Knit in Frameworks */,
+				FA4D2D4D2F7F5C7600EE44C6 /* KnitMacros in Frameworks */,
 				FA4D2D092F7F534900EE44C6 /* SwiftSoup in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA4D2D2C2F7F598800EE44C6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -37,15 +66,18 @@
 		FA4D2CEA2F7F52A900EE44C6 = {
 			isa = PBXGroup;
 			children = (
-				FA4D2CF52F7F52A900EE44C6 /* SwiftScaper */,
+				FA4D2CF52F7F52A900EE44C6 /* SwiftScraper */,
+				FA4D2D302F7F598800EE44C6 /* SwiftScraperTests */,
 				FA4D2CF42F7F52A900EE44C6 /* Products */,
+				FA4D2FA12F7F61A000EE44C6 /* knitconfig.json */,
 			);
 			sourceTree = "<group>";
 		};
 		FA4D2CF42F7F52A900EE44C6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FA4D2CF32F7F52A900EE44C6 /* SwiftScaper.app */,
+				FA4D2CF32F7F52A900EE44C6 /* SwiftScraper.app */,
+				FA4D2D2F2F7F598800EE44C6 /* SwiftScraperTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -53,9 +85,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FA4D2CF22F7F52A900EE44C6 /* SwiftScaper */ = {
+		FA4D2CF22F7F52A900EE44C6 /* SwiftScraper */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FA4D2CFE2F7F52AA00EE44C6 /* Build configuration list for PBXNativeTarget "SwiftScaper" */;
+			buildConfigurationList = FA4D2CFE2F7F52AA00EE44C6 /* Build configuration list for PBXNativeTarget "SwiftScraper" */;
 			buildPhases = (
 				FA4D2CEF2F7F52A900EE44C6 /* Sources */,
 				FA4D2CF02F7F52A900EE44C6 /* Frameworks */,
@@ -64,17 +96,43 @@
 			buildRules = (
 			);
 			dependencies = (
+				FA4D2FA02F7F619100EE44C6 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				FA4D2CF52F7F52A900EE44C6 /* SwiftScaper */,
+				FA4D2CF52F7F52A900EE44C6 /* SwiftScraper */,
 			);
-			name = SwiftScaper;
+			name = SwiftScraper;
 			packageProductDependencies = (
 				FA4D2D082F7F534900EE44C6 /* SwiftSoup */,
+				FA4D2D4A2F7F5C7600EE44C6 /* Knit */,
+				FA4D2D4C2F7F5C7600EE44C6 /* KnitMacros */,
 			);
-			productName = SwiftScaper;
-			productReference = FA4D2CF32F7F52A900EE44C6 /* SwiftScaper.app */;
+			productName = SwiftScraper;
+			productReference = FA4D2CF32F7F52A900EE44C6 /* SwiftScraper.app */;
 			productType = "com.apple.product-type.application";
+		};
+		FA4D2D2E2F7F598800EE44C6 /* SwiftScraperTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA4D2D352F7F598800EE44C6 /* Build configuration list for PBXNativeTarget "SwiftScraperTests" */;
+			buildPhases = (
+				FA4D2D2B2F7F598800EE44C6 /* Sources */,
+				FA4D2D2C2F7F598800EE44C6 /* Frameworks */,
+				FA4D2D2D2F7F598800EE44C6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FA4D2D342F7F598800EE44C6 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				FA4D2D302F7F598800EE44C6 /* SwiftScraperTests */,
+			);
+			name = SwiftScraperTests;
+			packageProductDependencies = (
+			);
+			productName = SwiftScraperTests;
+			productReference = FA4D2D2F2F7F598800EE44C6 /* SwiftScraperTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -89,9 +147,13 @@
 					FA4D2CF22F7F52A900EE44C6 = {
 						CreatedOnToolsVersion = 26.3;
 					};
+					FA4D2D2E2F7F598800EE44C6 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = FA4D2CF22F7F52A900EE44C6;
+					};
 				};
 			};
-			buildConfigurationList = FA4D2CEE2F7F52A900EE44C6 /* Build configuration list for PBXProject "SwiftScaper" */;
+			buildConfigurationList = FA4D2CEE2F7F52A900EE44C6 /* Build configuration list for PBXProject "SwiftScraper" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -102,19 +164,29 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				FA4D2D072F7F534900EE44C6 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				FA4D2D492F7F5C7600EE44C6 /* XCRemoteSwiftPackageReference "knit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA4D2CF42F7F52A900EE44C6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FA4D2CF22F7F52A900EE44C6 /* SwiftScaper */,
+				FA4D2CF22F7F52A900EE44C6 /* SwiftScraper */,
+				FA4D2D2E2F7F598800EE44C6 /* SwiftScraperTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		FA4D2CF12F7F52A900EE44C6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA4D2FA22F7F61A000EE44C6 /* knitconfig.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA4D2D2D2F7F598800EE44C6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -131,7 +203,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FA4D2D2B2F7F598800EE44C6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FA4D2D342F7F598800EE44C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FA4D2CF22F7F52A900EE44C6 /* SwiftScraper */;
+			targetProxy = FA4D2D332F7F598800EE44C6 /* PBXContainerItemProxy */;
+		};
+		FA4D2FA02F7F619100EE44C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = FA4D2F9F2F7F619100EE44C6 /* KnitBuildPlugin */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		FA4D2CFC2F7F52AA00EE44C6 /* Debug */ = {
@@ -259,7 +350,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SwiftScaper/SwiftScaper.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SwiftScraper/SwiftScraper.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -275,7 +366,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.skorulis.SwiftScaper;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skorulis.SwiftScraper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -292,7 +383,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SwiftScaper/SwiftScaper.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SwiftScraper/SwiftScraper.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -308,7 +399,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.skorulis.SwiftScaper;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skorulis.SwiftScraper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -320,10 +411,50 @@
 			};
 			name = Release;
 		};
+		FA4D2D362F7F598800EE44C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X4S6MUZL2D;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skorulis.SwiftScraperTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftScraper.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SwiftScraper";
+			};
+			name = Debug;
+		};
+		FA4D2D372F7F598800EE44C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X4S6MUZL2D;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skorulis.SwiftScraperTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftScraper.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SwiftScraper";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FA4D2CEE2F7F52A900EE44C6 /* Build configuration list for PBXProject "SwiftScaper" */ = {
+		FA4D2CEE2F7F52A900EE44C6 /* Build configuration list for PBXProject "SwiftScraper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FA4D2CFC2F7F52AA00EE44C6 /* Debug */,
@@ -332,11 +463,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FA4D2CFE2F7F52AA00EE44C6 /* Build configuration list for PBXNativeTarget "SwiftScaper" */ = {
+		FA4D2CFE2F7F52AA00EE44C6 /* Build configuration list for PBXNativeTarget "SwiftScraper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FA4D2CFF2F7F52AA00EE44C6 /* Debug */,
 				FA4D2D002F7F52AA00EE44C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA4D2D352F7F598800EE44C6 /* Build configuration list for PBXNativeTarget "SwiftScraperTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA4D2D362F7F598800EE44C6 /* Debug */,
+				FA4D2D372F7F598800EE44C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -352,6 +492,14 @@
 				minimumVersion = 2.13.4;
 			};
 		};
+		FA4D2D492F7F5C7600EE44C6 /* XCRemoteSwiftPackageReference "knit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cashapp/knit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -359,6 +507,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA4D2D072F7F534900EE44C6 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
+		};
+		FA4D2D4A2F7F5C7600EE44C6 /* Knit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA4D2D492F7F5C7600EE44C6 /* XCRemoteSwiftPackageReference "knit" */;
+			productName = Knit;
+		};
+		FA4D2D4C2F7F5C7600EE44C6 /* KnitMacros */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA4D2D492F7F5C7600EE44C6 /* XCRemoteSwiftPackageReference "knit" */;
+			productName = KnitMacros;
+		};
+		FA4D2F9F2F7F619100EE44C6 /* KnitBuildPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA4D2D492F7F5C7600EE44C6 /* XCRemoteSwiftPackageReference "knit" */;
+			productName = "plugin:KnitBuildPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
