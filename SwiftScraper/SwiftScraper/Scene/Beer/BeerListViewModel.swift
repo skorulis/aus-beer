@@ -13,6 +13,11 @@ import KnitMacros
     var selectedBeerInstanceID: Int64?
     var lastErrorMessage: String?
 
+    var selectedBeerInstance: BeerInstanceListRow? {
+        guard let id = selectedBeerInstanceID else { return nil }
+        return beerInstances.first { $0.id == id }
+    }
+
     @Resolvable<Resolver>
     init(sqlStore: SQLStore) {
         self.sqlStore = sqlStore
@@ -25,6 +30,9 @@ extension BeerListViewModel {
         do {
             beerInstances = try sqlStore.dbQueue.read { db in
                 try BeerInstanceListRow.fetchAll(db, sql: BeerInstanceListRow.selectSQL)
+            }
+            if let id = selectedBeerInstanceID, !beerInstances.contains(where: { $0.id == id }) {
+                selectedBeerInstanceID = nil
             }
             lastErrorMessage = nil
         } catch {

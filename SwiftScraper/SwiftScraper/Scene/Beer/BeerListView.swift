@@ -18,31 +18,48 @@ extension BeerListView: View {
 
     var body: some View {
         @Bindable var viewModel = viewModel
-        VStack(alignment: .leading, spacing: 0) {
-            if let message = viewModel.lastErrorMessage {
-                Text(message)
-                    .font(.caption)
-                    .foregroundStyle(.red)
-                    .padding([.horizontal, .top])
-            }
+        NavigationSplitView {
+            VStack(alignment: .leading, spacing: 0) {
+                if let message = viewModel.lastErrorMessage {
+                    Text(message)
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                        .padding([.horizontal, .top])
+                }
 
-            List(viewModel.beerInstances, selection: $viewModel.selectedBeerInstanceID) { row in
-                HStack(alignment: .firstTextBaseline) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(row.beer.name)
-                            .font(.subheadline)
-                        Text(row.brewery.name)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                List(viewModel.beerInstances, selection: $viewModel.selectedBeerInstanceID) { row in
+                    HStack(alignment: .firstTextBaseline) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(row.beer.name)
+                                .font(.subheadline)
+                            Text(row.brewery.name)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer(minLength: 8)
+                        Text("\(row.instance.size) ml · \(row.instance.vessel.rawValue)")
+                            .font(.caption2)
+                            .foregroundStyle(.tertiary)
                     }
-                    Spacer(minLength: 8)
-                    Text("\(row.instance.size) ml · \(row.instance.vessel.rawValue)")
-                        .font(.caption2)
-                        .foregroundStyle(.tertiary)
                 }
             }
+            .navigationTitle("Beers")
+        } detail: {
+            Group {
+                if let row = viewModel.selectedBeerInstance {
+                    NavigationStack {
+                        BeerDetailView(row: row)
+                    }
+                } else {
+                    ContentUnavailableView(
+                        "No Selection",
+                        systemImage: "mug.fill",
+                        description: Text("Select a beer in the list to see its details.")
+                    )
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .navigationTitle("Beers")
         .onAppear {
             viewModel.loadBeers()
         }
