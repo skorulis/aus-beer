@@ -18,6 +18,7 @@ struct SwiftScraperApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(viewModel: assembler.resolver.contentViewModel())
+                .environment(\.resolver, assembler.resolver)
         }
     }
 }

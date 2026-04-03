@@ -5,7 +5,7 @@ import Knit
 import KnitMacros
 import SwiftScraperCore
 
-@MainActor @Observable final class ContentViewModel {
+@MainActor @Observable final class SiteParsingViewModel {
     
     let webViewStore: WebViewStore
     
@@ -20,7 +20,7 @@ import SwiftScraperCore
     }
 }
 
-extension ContentViewModel {
+extension SiteParsingViewModel {
     func saveHTMLToTmp() async {
         do {
             let url = try await webViewStore.saveCurrentHTMLToTemporaryFile()

@@ -2,6 +2,7 @@
 
 import Foundation
 import Knit
+import SwiftUI
 
 final class SwiftScraperAssembly: AutoInitModuleAssembly {
     typealias TargetResolver = Resolver
@@ -18,6 +19,7 @@ final class SwiftScraperAssembly: AutoInitModuleAssembly {
     @MainActor
     private func registerViewModels(container: Container<TargetResolver>) {
         container.register(ContentViewModel.self) { ContentViewModel.make(resolver: $0) }
+        container.register(SiteParsingViewModel.self) { SiteParsingViewModel.make(resolver: $0) }
     }
     
     @MainActor
@@ -33,4 +35,8 @@ extension SwiftScraperAssembly {
     @MainActor static func testing() -> ScopedModuleAssembler<Resolver> {
         ScopedModuleAssembler<Resolver>([SwiftScraperAssembly()])
     }
+}
+
+public extension EnvironmentValues {
+    @Entry var resolver: Resolver?
 }
