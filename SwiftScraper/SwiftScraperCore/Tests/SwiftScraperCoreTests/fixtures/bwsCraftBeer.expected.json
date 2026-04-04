@@ -1,0 +1,518 @@
+[
+  {
+    "brewery" : "4 Pines",
+    "name" : "Japanese Lager",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 54,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Algorithm",
+    "name" : "Brewing Pale Ale",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 17,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Balter",
+    "name" : "Captain Sensible",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 21,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Balter",
+    "name" : "Cerveza",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 61,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 355,
+    "vesselType" : "bottle"
+  },
+  {
+    "brewery" : "Balter",
+    "name" : "Cerveza",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 24,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Balter",
+    "name" : "IPA",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 28,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "BentSpoke Brewing Co.",
+    "name" : "Barley Griffin Pale Ale",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 17,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "BentSpoke Brewing Co.",
+    "name" : "Crankshaft IPA",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 67,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "BentSpoke Brewing Co.",
+    "name" : "Sprocket IPA",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 26,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375
+  },
+  {
+    "brewery" : "Brookvale Union",
+    "name" : "Ginger Beer",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 29,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 330,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Capital Brewing Co.",
+    "name" : "Rock Hopper IPA",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 22,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Colossal Brewing",
+    "name" : "Hextra Terrestrial Hazy XPA",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 60,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Colossal Brewing",
+    "name" : "Hopmosphere West Coast IPA",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 69,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Colossal Brewing",
+    "name" : "Mind Harvest East Coast IPA",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 25,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Coopers",
+    "name" : "XPA",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 25,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Frenchies",
+    "name" : "Cool Kids Hazy",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 7,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 330,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Grifter Brewing",
+    "name" : "Pale Ale",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 20,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Hawke's Brewing Co.",
+    "name" : "Lager",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 20,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "John Boston",
+    "name" : "The Guardhouse Golden Ale",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 21,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 330
+  },
+  {
+    "brewery" : "KOSCIUSZKO",
+    "name" : "Pale Ale",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 26,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 330
+  },
+  {
+    "brewery" : "Little Creatures",
+    "name" : "Pale Ale",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 71,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 330,
+    "vesselType" : "bottle"
+  },
+  {
+    "brewery" : "Little Creatures",
+    "name" : "Pale Ale",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 9,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 568,
+    "vesselType" : "bottle"
+  },
+  {
+    "brewery" : "Mountain Culture",
+    "name" : "Status Quo Pale Ale",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 67,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 355,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Mountain Goat",
+    "name" : "Low Carb Lager",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 23,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Philter",
+    "name" : "XPA",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 17,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Stone & Wood",
+    "name" : "Pacific Ale",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 79,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 330,
+    "vesselType" : "bottle"
+  },
+  {
+    "brewery" : "Stone's",
+    "name" : "Ginger Joe Alcoholic Beer",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 10,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 500,
+    "vesselType" : "bottle"
+  },
+  {
+    "brewery" : "The Grifter Brewing Co.",
+    "name" : "Serpents Kiss Watermelon Pilsner",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 19,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "The Grifter Brewing Co",
+    "name" : "Lager",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 20,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "The Grifter Brewing Co",
+    "name" : "Pink Galah Sour Beer",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 23,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "The Grifter Brewing Co",
+    "name" : "XPA",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 18,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Wayward Brewing Co.",
+    "name" : "Everyday Ale",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 22,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Wayward Brewing Co",
+    "name" : "Pilsner",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 22,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "White Rabbit",
+    "name" : "Dark Ale",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 27,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 330
+  },
+  {
+    "brewery" : "Young Henrys",
+    "name" : "IPA",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 21,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Young Henrys",
+    "name" : "Newtowner Australian Pale Ale",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 68,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Young Henrys",
+    "name" : "Newtowner Pale Ale 3.5",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 18,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Yulli's Brews",
+    "name" : "Amanda Mandarin IPA",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 23,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Zytho Brewing",
+    "name" : "IPA",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 24,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  },
+  {
+    "brewery" : "Zytho Brewing",
+    "name" : "Velvet Luxe Stout",
+    "prices" : [
+      {
+        "memberOffer" : false,
+        "price" : 18,
+        "quantity" : 1
+      }
+    ],
+    "sizeMl" : 375,
+    "vesselType" : "can"
+  }
+]

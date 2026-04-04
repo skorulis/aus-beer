@@ -27,7 +27,7 @@ public enum BeerSite: String, Codable, Sendable, CaseIterable, Identifiable {
         case .danMurphys:
             return DanMurphysParser()
         case .bwsCraftBeer:
-            return DanMurphysParser()
+            return BWSParser()
         }
     }
 
