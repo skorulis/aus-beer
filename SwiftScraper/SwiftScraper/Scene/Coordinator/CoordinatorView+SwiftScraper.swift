@@ -6,6 +6,12 @@ import SwiftUI
 
 extension CoordinatorView {
     func withRenderers(resolver: Resolver) -> Self {
-        self.with(renderer: resolver.mainPathRenderer())
+        self
+            .with(renderer: resolver.mainPathRenderer())
+            .with(overlay: .basicDialog) { content, _ in
+                AnyView(BasicOverlayDialog {
+                    content
+                })
+            }
     }
 }

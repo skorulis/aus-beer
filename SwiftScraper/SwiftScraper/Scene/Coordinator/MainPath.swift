@@ -4,10 +4,12 @@ import ASKCoordinator
 import Foundation
 import Knit
 import SwiftUI
+import UntappdAPI
 
 enum MainPath: CoordinatorPath {
     case beerList
     case beerDetails(BeerInstanceListRow)
+    case untappdSearch(UntappdSearchPath)
     
     public var id: String {
         switch self {
@@ -15,8 +17,16 @@ enum MainPath: CoordinatorPath {
             return String(describing: self)
         case let .beerDetails(row):
             return "beer-details-\(row.id)"
+        case let .untappdSearch(path):
+            return path.id
         }
     }
+}
+
+struct UntappdSearchPath: CoordinatorPath {
+    let id = "untappd-search-\(UUID().uuidString)"
+    let items: [UntappdSearchResponse.Item]
+    let onSelect: (UntappdSearchResponse.Item) -> Void
 }
 
 struct MainPathRenderer: CoordinatorPathRenderer {
@@ -30,6 +40,14 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             BeerListView(viewModel: resolver.beerListViewModel())
         case .beerDetails(let row):
             BeerDetailView(viewModel: coordinator.apply(resolver.beerDetailViewModel(row: row)))
+        case .untappdSearch(let path):
+            BeerUntappdSearchListView(
+                items: path.items,
+                onSelect: { item in
+                    path.onSelect(item)
+                    coordinator.dismissOverlay()
+                }
+            )
         }
     }
 }
