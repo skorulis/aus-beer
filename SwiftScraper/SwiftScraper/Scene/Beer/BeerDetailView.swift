@@ -9,7 +9,13 @@ import SwiftUI
 @MainActor struct BeerDetailView {
 
     @State var viewModel: BeerDetailViewModel
+    @State private var untappdID: String?
     var row: BeerInstanceListRow { viewModel.row }
+
+    init(viewModel: BeerDetailViewModel) {
+        self._viewModel = State(initialValue: viewModel)
+        self._untappdID = State(initialValue: viewModel.row.beer.untappdID)
+    }
 }
 
 // MARK: - Rendering
@@ -20,8 +26,21 @@ extension BeerDetailView: View {
         Form {
             Section("Beer") {
                 LabeledContent("Name", value: row.beer.name)
-                if let id = row.beer.untappdID, !id.isEmpty {
-                    LabeledContent("Untappd", value: id)
+                LabeledContent("Untappd") {
+                    if let id = untappdID, !id.isEmpty {
+                        HStack(spacing: 8) {
+                            Text(id)
+                            Button("Clear") {
+                                untappdID = nil
+                            }
+                            .buttonStyle(.borderless)
+                        }
+                    } else {
+                        Button("Find") {
+                            viewModel.findUntappdBeer()
+                        }
+                        .buttonStyle(.borderless)
+                    }
                 }
             }
             Section("Brewery") {

@@ -7,23 +7,19 @@ import KnitMacros
 
 @MainActor @Observable final class SettingsViewModel {
 
-    private enum UserDefaultsKey {
-        static let untappdClientID = "untappdClientID"
-        static let untappdSecretID = "untappdSecretID"
-    }
-
     private let htmlExportDirectory: HTMLExportDirectoryStore
     private let sqlStore: SQLStore
+    private let mainStore: MainStore
 
     var lastErrorMessage: String?
     var clearDatabaseErrorMessage: String?
 
     var untappdClientID: String {
-        didSet { UserDefaults.standard.set(untappdClientID, forKey: UserDefaultsKey.untappdClientID) }
+        didSet { mainStore.settings.untappdClientID = untappdClientID }
     }
 
     var untappdSecretID: String {
-        didSet { UserDefaults.standard.set(untappdSecretID, forKey: UserDefaultsKey.untappdSecretID) }
+        didSet { mainStore.settings.untappdSecretID = untappdSecretID }
     }
 
     var exportFolderDisplayPath: String {
@@ -34,11 +30,13 @@ import KnitMacros
     init(
         htmlExportDirectory: HTMLExportDirectoryStore,
         sqlStore: SQLStore,
+        mainStore: MainStore,
     ) {
         self.htmlExportDirectory = htmlExportDirectory
         self.sqlStore = sqlStore
-        untappdClientID = UserDefaults.standard.string(forKey: UserDefaultsKey.untappdClientID) ?? ""
-        untappdSecretID = UserDefaults.standard.string(forKey: UserDefaultsKey.untappdSecretID) ?? ""
+        self.mainStore = mainStore
+        untappdClientID = mainStore.settings.untappdClientID ?? ""
+        untappdSecretID = mainStore.settings.untappdSecretID ?? ""
     }
 
     func clearAllDatabaseData() {

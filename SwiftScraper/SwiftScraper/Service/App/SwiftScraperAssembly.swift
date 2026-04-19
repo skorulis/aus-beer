@@ -1,5 +1,6 @@
 //  Created by Alexander Skorulis on 3/4/2026.
 
+import ASKCore
 import Foundation
 import Knit
 import SwiftUI
@@ -14,8 +15,11 @@ final class SwiftScraperAssembly: AutoInitModuleAssembly {
     
     @MainActor
     func assemble(container: Container<Resolver>) {
+        ASKCoreAssembly(purpose: .normal).assemble(container: container)
+        
         registerViewModels(container: container)
         registerStores(container: container)
+        registerService(container: container)
         
         container.register(MainPathRenderer.self) { MainPathRenderer(resolver: $0) }
     }
@@ -45,6 +49,9 @@ final class SwiftScraperAssembly: AutoInitModuleAssembly {
             SQLStore.default()
         }
         .inObjectScope(.container)
+        
+        container.register(MainStore.self) { MainStore.make(resolver: $0) }
+            .inObjectScope(.container)
     }
     
     @MainActor
@@ -52,8 +59,9 @@ final class SwiftScraperAssembly: AutoInitModuleAssembly {
         container.register(ParsedBeerPersistenceService.self) { ParsedBeerPersistenceService.make(resolver: $0) }
             .inObjectScope(.container)
         
-        container.register(UntappdService.self) { _ in
-            UntappdService(clientID: "-", clientSecret: "-")
+        container.register(UntappdService.self) { resolver in
+            let store = resolver.mainStore()
+            return UntappdService(clientID: store.settings.untappdClientID ?? "", clientSecret: store.settings.untappdSecretID ?? "")
         }
     }
     

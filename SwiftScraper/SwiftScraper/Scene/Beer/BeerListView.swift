@@ -53,6 +53,7 @@ extension BeerListView: View {
                         coordinator: Coordinator(root: MainPath.beerDetails(row))
                     )
                     .withRenderers(resolver: resolver!)
+                    .id(row.id)
                 } else {
                     ContentUnavailableView(
                         "No Selection",

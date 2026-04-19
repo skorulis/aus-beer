@@ -15,6 +15,7 @@
 		FA4D2FA82F7F620000EE44C6 /* SwiftScraperCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA4D2FA72F7F620000EE44C6 /* SwiftScraperCore */; };
 		FA4D314B2F7F84DD00EE44C6 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = FA4D314A2F7F84DD00EE44C6 /* GRDB */; };
 		FA4D340C2F80661700EE44C6 /* ASKCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FA4D340B2F80661700EE44C6 /* ASKCoordinator */; };
+		FA5E9E5F2F94A38700A84F41 /* ASKCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA5E9E5E2F94A38700A84F41 /* ASKCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 				FA2FA21D2F80768C00E9FB08 /* ASKCoordinator in Frameworks */,
 				FA4D2FA82F7F620000EE44C6 /* SwiftScraperCore in Frameworks */,
 				FA4D314B2F7F84DD00EE44C6 /* GRDB in Frameworks */,
+				FA5E9E5F2F94A38700A84F41 /* ASKCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +120,7 @@
 				FA4D340B2F80661700EE44C6 /* ASKCoordinator */,
 				FA2FA21C2F80768C00E9FB08 /* ASKCoordinator */,
 				FA2FA2272F807C3000E9FB08 /* UntappdAPI */,
+				FA5E9E5E2F94A38700A84F41 /* ASKCore */,
 			);
 			productName = SwiftScraper;
 			productReference = FA4D2CF32F7F52A900EE44C6 /* SwiftScraper.app */;
@@ -180,6 +183,7 @@
 				FA4D31492F7F84DD00EE44C6 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 				FA2FA21B2F80768C00E9FB08 /* XCRemoteSwiftPackageReference "ASKCoordinator" */,
 				FA2FA2262F807C3000E9FB08 /* XCRemoteSwiftPackageReference "untappd-api-swift" */,
+				FA5E9E5D2F94A38700A84F41 /* XCRemoteSwiftPackageReference "ASKCore" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA4D2CF42F7F52A900EE44C6 /* Products */;
@@ -538,6 +542,14 @@
 				kind = branch;
 			};
 		};
+		FA5E9E5D2F94A38700A84F41 /* XCRemoteSwiftPackageReference "ASKCore" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/skorulis/ASKCore";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -579,6 +591,11 @@
 		FA4D340B2F80661700EE44C6 /* ASKCoordinator */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ASKCoordinator;
+		};
+		FA5E9E5E2F94A38700A84F41 /* ASKCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA5E9E5D2F94A38700A84F41 /* XCRemoteSwiftPackageReference "ASKCore" */;
+			productName = ASKCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -29,7 +29,7 @@ struct MainPathRenderer: CoordinatorPathRenderer {
         case .beerList:
             BeerListView(viewModel: resolver.beerListViewModel())
         case .beerDetails(let row):
-            BeerDetailView(viewModel: resolver.beerDetailViewModel(row: row))
+            BeerDetailView(viewModel: coordinator.apply(resolver.beerDetailViewModel(row: row)))
         }
     }
 }
