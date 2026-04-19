@@ -1,5 +1,6 @@
 //  Created by Alexander Skorulis on 3/4/2026.
 
+import ASKCoordinator
 import Foundation
 import Knit
 import SwiftScraperCore
@@ -10,6 +11,7 @@ import SwiftUI
 @MainActor struct BeerListView {
 
     @State var viewModel: BeerListViewModel
+    @Environment(\.resolver) var resolver
 }
 
 // MARK: - Rendering
@@ -47,9 +49,10 @@ extension BeerListView: View {
         } detail: {
             Group {
                 if let row = viewModel.selectedBeerInstance {
-                    NavigationStack {
-                        BeerDetailView(row: row)
-                    }
+                    CoordinatorView(
+                        coordinator: Coordinator(root: MainPath.beerDetails(row))
+                    )
+                    .withRenderers(resolver: resolver!)
                 } else {
                     ContentUnavailableView(
                         "No Selection",

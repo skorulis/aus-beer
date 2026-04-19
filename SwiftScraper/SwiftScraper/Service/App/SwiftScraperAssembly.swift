@@ -4,6 +4,7 @@ import Foundation
 import Knit
 import SwiftUI
 import SwiftScraperCore
+import UntappdAPI
 
 final class SwiftScraperAssembly: AutoInitModuleAssembly {
     typealias TargetResolver = Resolver
@@ -27,6 +28,10 @@ final class SwiftScraperAssembly: AutoInitModuleAssembly {
         }
         container.register(SettingsViewModel.self) { SettingsViewModel.make(resolver: $0) }
         container.register(BeerListViewModel.self) { BeerListViewModel.make(resolver: $0) }
+        
+        container.register(BeerDetailViewModel.self) { (resolver: Resolver, row: BeerInstanceListRow) in
+            BeerDetailViewModel.make(resolver: resolver, row: row)
+        }
     }
     
     @MainActor
@@ -36,14 +41,22 @@ final class SwiftScraperAssembly: AutoInitModuleAssembly {
         container.register(WebViewStore.self) { WebViewStore.make(resolver: $0) }
             .inObjectScope(.container)
 
-        container.register(ParsedBeerPersistenceService.self) { ParsedBeerPersistenceService.make(resolver: $0) }
-            .inObjectScope(.container)
-        
         container.register(SQLStore.self) { _ in
             SQLStore.default()
         }
         .inObjectScope(.container)
     }
+    
+    @MainActor
+    private func registerService(container: Container<TargetResolver>) {
+        container.register(ParsedBeerPersistenceService.self) { ParsedBeerPersistenceService.make(resolver: $0) }
+            .inObjectScope(.container)
+        
+        container.register(UntappdService.self) { _ in
+            UntappdService(clientID: "-", clientSecret: "-")
+        }
+    }
+    
     
     
 }

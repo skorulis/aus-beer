@@ -1,9 +1,4 @@
-//
-//  MainPath.swift
-//  SwiftScraper
-//
 //  Created by Alexander Skorulis on 4/4/2026.
-//
 
 import ASKCoordinator
 import Foundation
@@ -12,11 +7,14 @@ import SwiftUI
 
 enum MainPath: CoordinatorPath {
     case beerList
+    case beerDetails(BeerInstanceListRow)
     
     public var id: String {
         switch self {
         case .beerList:
             return String(describing: self)
+        case let .beerDetails(row):
+            return "beer-details-\(row.id)"
         }
     }
 }
@@ -30,6 +28,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
         switch path {
         case .beerList:
             BeerListView(viewModel: resolver.beerListViewModel())
+        case .beerDetails(let row):
+            BeerDetailView(viewModel: resolver.beerDetailViewModel(row: row))
         }
     }
 }

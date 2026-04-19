@@ -1,5 +1,6 @@
 //  Created by Alexander Skorulis on 4/4/2026.
 
+import Knit
 import SwiftScraperCore
 import SwiftUI
 
@@ -7,7 +8,8 @@ import SwiftUI
 
 @MainActor struct BeerDetailView {
 
-    let row: BeerInstanceListRow
+    @State var viewModel: BeerDetailViewModel
+    var row: BeerInstanceListRow { viewModel.row }
 }
 
 // MARK: - Rendering
@@ -41,13 +43,16 @@ extension BeerDetailView: View {
 // MARK: - Previews
 
 #Preview {
-    NavigationStack {
+    let assembler = SwiftScraperAssembly.testing()
+    let row = BeerInstanceListRow(
+        instance: BeerInstanceRecord(rowId: 1, beer: 1, size: 375, vessel: .can),
+        beer: BeerRecord(rowId: 1, brewery: 1, name: "Super Dry"),
+        brewery: BreweryRecord(rowId: 1, name: "Asahi")
+    )
+    let viewModel = assembler.resolver.beerDetailViewModel(row: row)
+    return NavigationStack {
         BeerDetailView(
-            row: BeerInstanceListRow(
-                instance: BeerInstanceRecord(rowId: 1, beer: 1, size: 375, vessel: .can),
-                beer: BeerRecord(rowId: 1, brewery: 1, name: "Super Dry"),
-                brewery: BreweryRecord(rowId: 1, name: "Asahi")
-            )
+            viewModel: viewModel
         )
     }
     .frame(minWidth: 360, minHeight: 280)
